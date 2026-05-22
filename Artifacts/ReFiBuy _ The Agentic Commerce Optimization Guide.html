@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)https://refibuy.ai/agentic-commerce-optimization-guide -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReFiBuy | The Agentic Commerce Optimization Guide</title>
+<link href="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --red: #CB2026;
+    --green: #098843;
+    --blue: #3466B1;
+    --dark-blue: #0B254C;
+    --yellow: #FFCA23;
+    --grey: #2D2D2D;
+    --mid-grey: #8A9AB5;
+    --light-grey: #F6F7F9;
+    --border-grey: #E8ECF1;
+    --white: #FFFFFF;
+    --light-bg: #F8FAFC;
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: var(--font-body); color: var(--grey); background: var(--white); -webkit-font-smoothing: antialiased; }
+  .container { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  .container--wide { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  /* ══ PROGRESS BAR WITH SECTION LABELS ══ */
+  .progress-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--border-grey);
+    transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .progress-nav.visible { transform: translateY(0); }
+  .progress-nav__inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 60px;
+    display: flex; align-items: center; justify-content: space-between; height: 60px;
+  }
+  .progress-nav__sections {
+    display: flex; gap: 0; flex: 1; justify-content: center;
+  }
+  .progress-nav__section {
+  font-family: var(--font-heading); font-size: 0.625rem; font-weight: 700;    letter-spacing: 0.15em; text-transform: uppercase; color: rgba(11,37,76,0.35);
+    padding: 0 14px; cursor: pointer; transition: color 0.3s; white-space: nowrap;
+    text-decoration: none;
+  }
+  .progress-nav__section.active { color: var(--dark-blue); }
+  .progress-nav__section:hover { color: rgba(11,37,76,0.65); }
+  .progress-nav__cta {
+    font-family: var(--font-heading); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--white);
+    background: var(--blue); padding: 7px 16px; text-decoration: none; transition: background 0.2s;
+    flex-shrink: 0; margin-left: 36px; border-radius: 10px;
+  }
+  .progress-nav__cta:hover { background: #2a5594; }
+  .progress-nav__bar {
+    position: absolute; bottom: 0; left: 0; height: 5px;
+    background: var(--blue); width: 0%; transition: width 0.12s linear;
+  }
+  .progress-nav__logo-link {
+    display: flex; align-items: center; flex-shrink: 0; margin-right: 36px;
+  }
+  .progress-nav__logo {
+    height: 34px; width: auto; flex-shrink: 0;
+  }
+  @media (max-width: 768px) {
+    .progress-nav__sections { display: none; }
+    .progress-nav__cta { margin-left: auto; }
+    .progress-nav__logo { height: 28px; }
+  }
+  /* ══ HERO TOP NAV ══ */
+  .hero-nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    padding: 28px 40px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .hero-nav__logo { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+  .hero-nav__logo svg { height: 38px; width: auto; }
+  .hero-nav__logo-text {
+    font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800;
+    color: var(--white); letter-spacing: -0.01em; text-decoration: none;
+  }
+  .hero-nav__cta {
+  font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--white); background: var(--blue); padding: 15px 25px; text-decoration: none;    transition: background 0.2s; white-space: nowrap; border-radius: 10px;
+  }
+  .hero-nav__cta:hover { background: #2a5594; }
+  @media (max-width: 520px) {
+    .hero-nav { padding: 20px 20px; }
+    .hero-nav__logo svg { height: 30px; }
+    .hero-nav__logo-text { font-size: 0.95rem; }
+    .hero-nav__cta { font-size: 0.58rem; padding: 9px 16px; }
+  }
+  /* ══ HERO ══ */
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; overflow: hidden;
+    background: url('https://refibuy.ai/hubfs/ACO%20Guide%20Images.jpg') center/cover no-repeat;
+  }
+  .hero__overlay {
+    position: absolute; inset: 0; z-index: 0;
+    background: rgba(255,255,255,0.45);
+  }
+  .hero__bg { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+  .hero__grid {
+    position: absolute; inset: -20%;
+    background-image: linear-gradient(rgba(52,102,177,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(52,102,177,0.06) 1px, transparent 1px);
+    background-size: 60px 60px; transform: perspective(600px) rotateX(25deg);
+    transform-origin: center 70%; animation: gridDrift 20s linear infinite;
+  }
+  @keyframes gridDrift { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+  .hero__glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; filter: blur(140px); opacity: 0.1; }
+  .hero__glow--1 { background: var(--red); top: -10%; right: -5%; }
+  .hero__glow--2 { background: var(--blue); bottom: -15%; left: -5%; }
+  .hero__content { position: relative; z-index: 2; text-align: center; max-width: 760px; padding: 0 24px; }
+  .hero__eyebrow {
+    font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue);
+    margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    display: block; text-align: center; width: 100%;
+    text-indent: 0.22em; /* compensate for letter-spacing optical shift */
+  }
+  .hero__title {
+    font-family: var(--font-heading); font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+    font-weight: 800; color: var(--grey); line-height: 1.12;
+    margin-bottom: 28px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero__subtitle {
+    font-family: var(--font-body); font-size: 1.1rem; color: var(--grey);
+    line-height: 1.75; max-width: 600px; margin: 0 auto 12px;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero__readtime {
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    margin-bottom: 36px; opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero__cta-start {
+    font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--white);
+    background: var(--blue); padding: 16px 36px; border-radius: 10px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: background 0.2s;
+  }
+  .hero__cta-start:hover { background: #2a5594; }
+  .hero__readtime-label {
+    font-family: var(--font-body); font-size: 0.85rem; color: var(--mid-grey);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero__scroll {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+    font-family: var(--font-heading); font-size: 0.55rem; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid-grey);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeUp 0.8s 1s forwards;
+  }
+  .hero__scroll svg { animation: scrollBounce 2s ease-in-out infinite; }
+  @keyframes scrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  /* ══ CHAPTER NAV ══ */
+  .chapters-nav { background: var(--white); padding: 72px 24px; border-bottom: 1px solid var(--border-grey); }
+  .chapters-nav__label {
+    font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid-grey);
+    text-align: center; margin-bottom: 36px;
+  }
+  .chapters-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px; background: var(--border-grey); max-width: 900px;
+    margin: 0 auto; border: 1px solid var(--border-grey);
+  }
+  .chapters-grid__item {
+    background: var(--white); padding: 24px 20px; text-decoration: none;
+    color: var(--grey); display: flex; gap: 14px; transition: background 0.2s;
+  }
+  .chapters-grid__item:hover { background: var(--light-grey); text-decoration: none; }
+  .chapters-grid__num { font-family: var(--font-heading); font-size: 1.65rem; font-weight: 800; color: var(--blue); line-height: 1; flex-shrink: 0; width: 38px; }
+  .chapters-grid__title { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 700; line-height: 1.4; color: var(--dark-blue); }
+  /* ══ SECTIONS ══ */
+  .section { padding: 88px 0; }
+  .section--grey { background: var(--light-grey); }
+  .section--dark { background: var(--dark-blue); color: var(--white); position: relative; overflow: hidden; }
+  .section--dark .section__eyebrow { color: var(--red); }
+  .section--dark .section__title { color: var(--white); }
+  .section--dark p { color: rgba(255,255,255,0.8); }
+  .section--dark .footnote { color: var(--mid-grey); border-top-color: rgba(255,255,255,0.1); }
+  .section__eyebrow { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+  .section__title { font-family: var(--font-heading); font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 800; color: var(--dark-blue); line-height: 1.2; margin-bottom: 28px; }
+  .section p { font-size: 1.05rem; line-height: 1.85; margin-bottom: 22px; }
+  .section p:last-child { margin-bottom: 0; }
+  .footnote { font-size: 0.8rem; color: var(--mid-grey); font-style: italic; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--border-grey); }
+  strong.term { font-weight: 700; color: var(--dark-blue); }
+  .section--dark strong.term { color: var(--white); }
+  /* ══ SHAREABLE PULL QUOTES ══ */
+  .pullquote { background: var(--light-bg); border-left: 3px solid var(--red); padding: 36px 40px; margin: 44px 0; position: relative; border-radius: 0 10px 10px 0; }
+  .pullquote__text { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; line-height: 1.5; color: var(--dark-blue); margin-bottom: 0 !important; }
+  .section--dark .pullquote { background: rgba(255,255,255,0.06); }
+  .section--dark .pullquote__text { color: var(--white); }
+  .pullquote__share { display: flex; align-items: center; gap: 6px; margin-top: 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.3s; }
+  .pullquote:hover .pullquote__share { opacity: 1; transform: translateY(0); }
+  .pullquote__share-label { font-family: var(--font-heading); font-size: 0.55rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid-grey); margin-right: 4px; }
+  .share-btn { width: 28px; height: 28px; border: 1px solid var(--border-grey); background: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--mid-grey); border-radius: 4px; }
+  .share-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--light-grey); }
+  .share-btn svg { width: 13px; height: 13px; min-width: 13px; flex-shrink: 0; }
+  .section--dark .share-btn { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); }
+  .section--dark .share-btn:hover { border-color: var(--red); color: var(--red); background: rgba(255,255,255,0.1); }
+  .share-toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--white); color: var(--blue); font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 10px 22px; z-index: 200; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+  .share-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* Pull quote — inline secondary (no share) */
+  .pullquote--inline { border-left: 2px solid var(--border-grey); padding: 4px 0 4px 24px; margin: 32px 0; }
+  .pullquote--inline .pullquote__text { font-size: 1.05rem; font-weight: 600; color: var(--mid-grey); }
+  /* ══ STAT CALLOUT ══ */
+  .stat-callout { display: flex; align-items: center; gap: 28px; margin: 44px 0; padding: 32px 28px; border: 1px solid var(--border-grey); background: var(--light-grey); }
+  .stat-callout__number { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 900; color: var(--red); line-height: 1; flex-shrink: 0; }
+  .stat-callout__text { font-size: 0.95rem; line-height: 1.7; }
+  @media (max-width: 580px) { .stat-callout { flex-direction: column; text-align: center; } }
+  /* ══ CHAIN BOXOUT ══ */
+  .chain-boxout { margin: 44px 0; border: 1px solid var(--border-grey); background: var(--white); overflow: hidden; }
+  .chain-boxout__header { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); background: var(--blue); padding: 12px 24px; }
+  .chain-boxout__body { padding: 28px 24px; }
+  .chain-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .chain-row:last-child { margin-bottom: 0; }
+  .chain-row__label { font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; width: 70px; flex-shrink: 0; color: var(--mid-grey); }
+  .chain-row__label--new { color: var(--red); }
+  .chain-row__steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+  .chain-step { font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600; color: var(--dark-blue); padding: 7px 12px; background: var(--light-grey); white-space: nowrap; }
+  .chain-row--new .chain-step { background: rgba(203,32,38,0.06); color: var(--red); }
+  .chain-arrow { font-size: 0.72rem; color: var(--mid-grey); padding: 0 3px; }
+  @media (max-width: 600px) { .chain-row { flex-direction: column; align-items: flex-start; } .chain-row__label { width: auto; } }
+  /* ══ PRODUCT CARD DEFINITION BOX ══ */
+  .definition-box {
+    margin: 44px 0; background: var(--blue); padding: 36px 32px; position: relative;
+  }
+  .definition-box__label {
+    font-family: var(--font-heading); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); margin-bottom: 14px;
+  }
+  .definition-box__text {
+    font-family: var(--font-body); font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.85);
+  }
+  .definition-box__text strong { color: var(--white); }
+  /* ══ 30/70 EVALUATION LAYERS ══ */
+  .eval-layers { margin: 48px 0; }
+  .eval-layer {
+    display: grid; grid-template-columns: 30% 70%; gap: 0;
+    border: 1px solid var(--border-grey); margin-bottom: -1px; background: var(--white);
+  }
+  .eval-layer__left {
+    padding: 32px 24px; border-right: 1px solid var(--border-grey);
+    display: flex; flex-direction: column; justify-content: flex-start;
+  }
+  .eval-layer__num { font-family: var(--font-heading); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+  .eval-layer__title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--dark-blue); margin-bottom: 10px; line-height: 1.3; }
+  .eval-layer__question { font-family: var(--font-heading); font-size: 0.88rem; font-weight: 600; color: var(--dark-blue); line-height: 1.45; margin-bottom: 16px; }
+  .eval-layer__right { padding: 32px 28px; }
+  .eval-layer__right p { font-size: 0.98rem; line-height: 1.8; margin-bottom: 14px; }
+  .eval-layer__right p:last-child { margin-bottom: 0; }
+  @media (max-width: 720px) {
+    .eval-layer { grid-template-columns: 1fr; }
+    .eval-layer__left { border-right: none; border-bottom: 1px solid var(--border-grey); padding: 24px 20px; }
+    .eval-layer__right { padding: 24px 20px; }
+  }
+  /* ══ SEO/GEO/ACO OS LAYERS ══ */
+  .os-layers { margin: 56px 0; }
+  .os-layers__header { font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); background: var(--blue); padding: 14px 28px; }
+  .os-layers__stack { border: 1px solid var(--border-grey); overflow: hidden; }
+  .os-layer {
+    padding: 28px 32px; transition: all 0.2s;
+  }
+  .os-layer--aco { background: var(--light-grey); position: relative; border-bottom: 3px solid var(--blue); }
+  .os-layer--geo { background: var(--light-grey); border-bottom: 3px solid var(--blue); }
+  .os-layer--seo { background: var(--light-grey); }
+  .os-layer__left { flex: 1; }
+  .os-layer__level {
+    font-family: var(--font-heading); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .os-layer--aco .os-layer__level { color: var(--blue); }
+  .os-layer--geo .os-layer__level { color: var(--blue); }
+  .os-layer--seo .os-layer__level { color: var(--blue); }
+  .os-layer__name { font-family: var(--font-heading); font-weight: 800; line-height: 1.3; margin-bottom: 10px; }
+  .os-layer--aco .os-layer__name,
+  .os-layer--geo .os-layer__name,
+  .os-layer--seo .os-layer__name { font-size: 1rem; color: var(--grey); }
+  .os-layer__desc { font-size: 0.88rem; line-height: 1.7; color: var(--grey); }
+  .os-layer--aco .os-layer__badge {
+    position: absolute; top: 0; right: 0; background: var(--green); color: var(--white);
+    font-family: var(--font-heading); font-size: 0.52rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 14px;
+  }
+  /* ══ OWNERSHIP VACUUM GRAPHIC ══ */
+  .vacuum-graphic { margin: 48px 0; text-align: center; }
+  .vacuum-circles {
+    display: flex; justify-content: center; align-items: center;
+    position: relative; height: 220px; margin-bottom: 20px;
+  }
+  .vacuum-circle {
+    width: 160px; height: 160px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; text-align: center;
+    font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.08em; line-height: 1.4;
+  }
+  .vacuum-circle--mkt { background: rgba(52,102,177,0.08); color: var(--blue); margin-right: -30px; z-index: 1; }
+  .vacuum-circle--ecom { background: rgba(9,136,67,0.08); color: var(--green); margin-right: -30px; z-index: 1; }
+  .vacuum-circle--data { background: rgba(203,32,38,0.08); color: var(--red); z-index: 1; }
+  .vacuum-center {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 90px; height: 90px; border-radius: 50%;
+    border: 2px dashed var(--red); display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading); font-size: 0.5rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--red);
+    background: var(--white); z-index: 2;
+  }
+  .vacuum-caption {
+    font-family: var(--font-heading); font-size: 0.72rem; font-weight: 600;
+    color: var(--mid-grey); max-width: 500px; margin: 0 auto; line-height: 1.6;
+  }
+  @media (max-width: 580px) {
+    .vacuum-circle { width: 120px; height: 120px; font-size: 0.58rem; margin-right: -20px !important; }
+    .vacuum-center { width: 70px; height: 70px; font-size: 0.45rem; }
+  }
+  /* ══ SELF-ASSESSMENT CHECKLIST ══ */
+  .checklist-card { margin: 44px 0; border: 1px solid var(--border-grey); background: var(--white); overflow: hidden; }
+  .checklist-card__header {
+    font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--white);
+    background: var(--blue); padding: 12px 24px;
+  }
+  .checklist-card__body { padding: 8px 0; }
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 16px; padding: 16px 24px;
+    border-bottom: 1px solid var(--border-grey);
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item__check {
+    width: 18px; height: 18px; border: 2px solid var(--border-grey); border-radius: 6px;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .checklist-item p { font-size: 0.95rem; line-height: 1.7; margin: 0; }
+  .checklist-card__footer {
+    padding: 14px 24px; background: var(--light-grey); border-top: 1px solid var(--border-grey);
+    font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600; color: var(--mid-grey);
+  }
+  /* ══ BILLBOARD (Silent Exclusion) ══ */
+  .billboard {
+    background: var(--dark-blue); padding: 80px 24px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .billboard__h1 {
+    font-family: var(--font-heading); font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 12px;
+  }
+  .billboard__h2 {
+    font-family: var(--font-heading); font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800; color: var(--white); line-height: 1.2; max-width: 700px; margin: 0 auto;
+  }
+  /* ══ 50% SCROLL SHARE STRIP ══ */
+  .share-strip {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+    background: var(--white); border-top: 1px solid var(--border-grey);
+    padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 16px;
+    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+  }
+  .share-strip.visible { transform: translateY(0); }
+  .share-strip__text { font-family: var(--font-body); font-size: 0.85rem; color: var(--grey); }
+  .share-strip__close {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--mid-grey); cursor: pointer;
+    font-size: 1.2rem; padding: 4px;
+  }
+  /* ══ 30/70 BOXOUT QUOTE ══ */
+  .boxout-3070 {
+    display: grid; grid-template-columns: 35% 65%; gap: 0;
+    border: 1px solid var(--border-grey); margin: 44px 0; background: var(--white); overflow: hidden;
+  }
+  .boxout-3070__left {
+    padding: 32px 24px; background: var(--light-grey); border-right: 1px solid var(--border-grey);
+    display: flex; align-items: center;
+  }
+  .boxout-3070__left p {
+    font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; line-height: 1.5;
+    color: var(--dark-blue); margin: 0;
+  }
+  .boxout-3070__right { padding: 32px 24px; }
+  .boxout-3070__right p { font-size: 0.98rem; line-height: 1.8; margin: 0; }
+  @media (max-width: 680px) { .boxout-3070 { grid-template-columns: 1fr; } .boxout-3070__left { border-right: none; border-bottom: 1px solid var(--border-grey); } }
+  /* ══ CTA SECTION ══ */
+  .cta-section { background: var(--light-bg); padding: 88px 24px; text-align: center; position: relative; overflow: hidden; }
+  .cta-section__arc { position: absolute; width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(11,37,76,0.03); pointer-events: none; }
+  .cta-section__arc--1 { top: -200px; right: -100px; }
+  .cta-section__arc--2 { bottom: -250px; left: -150px; width: 500px; height: 500px; }
+  .cta-section__content { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+  .cta-section__title { font-family: var(--font-heading); font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 800; color: var(--dark-blue); line-height: 1.2; margin-bottom: 20px; }
+  .cta-section__desc { font-size: 1rem; color: var(--grey); line-height: 1.75; margin-bottom: 16px; }
+  .btn-primary { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); background: var(--blue); padding: 14px 32px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s; border-radius: 10px; }
+  .btn-primary:hover { background: #2a5594; }
+  .cta-section__includes { font-size: 0.82rem; color: var(--mid-grey); margin-top: 16px; line-height: 1.6; }
+  /* End share */
+  .end-share { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border-grey); }
+  .end-share__prompt { font-family: var(--font-body); font-size: 0.88rem; color: var(--mid-grey); margin-bottom: 16px; }
+  .end-share__buttons { display: flex; gap: 8px; justify-content: center; }
+  .end-share__btn {
+    font-family: var(--font-heading); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark-blue);
+    border: 1px solid var(--border-grey); background: var(--white);
+    padding: 8px 18px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s; border-radius: 10px;
+  }
+  .end-share__btn:hover { border-color: var(--blue); color: var(--blue); }
+  .end-share__btn svg { width: 14px; height: 14px; min-width: 14px; flex-shrink: 0; }
+  /* ══ INTERSTITIAL ══ */
+  .interstitial { background: var(--blue); padding: 56px 24px; text-align: center; }
+  .interstitial__text { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: var(--white); line-height: 1.5; max-width: 600px; margin: 0 auto; }
+  /* ══ MID-PAGE CTA ══ */
+  .mid-cta { margin: 44px 0; padding: 24px 28px; background: var(--light-grey); border: 1px solid var(--border-grey); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .mid-cta__text { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600; color: var(--dark-blue); }
+  .mid-cta__link { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .mid-cta__link:hover { text-decoration: underline; }
+  /* ══ REVEAL ══ */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* ══ RESPONSIVE ══ */
+  @media (max-width: 680px) {
+    .section { padding: 60px 0; }
+    .hero { min-height: 90vh; }
+    .chapters-grid { grid-template-columns: 1fr; }
+    .pullquote__share { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:description" content="How agentic shopping engines actually evaluate products, and what commerce teams must do to compete. Read the definitive ACO guide.">
+    <meta property="og:title" content="ReFiBuy | The Agentic Commerce Optimization Guide">
+    <meta name="twitter:description" content="How agentic shopping engines actually evaluate products, and what commerce teams must do to compete. Read the definitive ACO guide.">
+    <meta name="twitter:title" content="ReFiBuy | The Agentic Commerce Optimization Guide">
+
+    
+
+    
+    <style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+    
+
+    
+    <link rel="canonical" href="https://refibuy.ai/agentic-commerce-optimization-guide">
+
+<style>
+  header {
+    background-color: red;
+  }
+</style>
+<meta property="og:image" content="https://refibuy.ai/hubfs/ACO%20Guide%20Images_linkedin_aco_post_1.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="620">
+<meta property="og:image:alt" content="Agentic Commerce Optimization">
+<meta name="twitter:image" content="https://refibuy.ai/hubfs/ACO%20Guide%20Images_linkedin_aco_post_1.jpg">
+<meta name="twitter:image:alt" content="Agentic Commerce Optimization">
+
+<meta property="og:url" content="https://refibuy.ai/agentic-commerce-optimization-guide">
+<meta name="twitter:card" content="summary_large_image">
+<meta http-equiv="content-language" content="en">
+
+
+
+
+
+
+
+<meta name="generator" content="HubSpot"><script async="" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/js"></script><script type="text/javascript" async="" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/f.txt"></script></head>
+<body>
+<div class="share-toast" id="shareToast">Copied to clipboard</div>
+<!-- PROGRESS NAV -->
+<nav class="progress-nav" id="progressNav">
+  <div class="progress-nav__inner">
+    <a href="https://refibuy.ai/?hsLang=en" class="progress-nav__logo-link" target="_blank" rel="noopener">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/refibuy_white_boarder.png" alt="ReFiBuy" class="progress-nav__logo">
+    </a>
+    <div class="progress-nav__sections">
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-1" data-section="chapter-1">Intro</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-2" data-section="chapter-2">The Shift</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-3" data-section="chapter-3">Product Evaluation</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-4" data-section="chapter-4">Defining ACO</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-5" data-section="chapter-5">Team Readiness</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-6" data-section="chapter-6">How to Compete</a>
+      <a class="progress-nav__section" href="https://refibuy.ai/agentic-commerce-optimization-guide#cta-readiness" data-section="cta-readiness">Assessment</a>
+    </div>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#cta-readiness" class="progress-nav__cta">Get Your Readiness Report</a>
+  </div>
+  <div class="progress-nav__bar" id="progressBar" style="width: 4.72743%;"></div>
+</nav>
+<!-- 50% SHARE STRIP -->
+<div class="share-strip" id="shareStrip">
+  <span class="share-strip__text">You're halfway through. This one's worth sharing.</span>
+  <button class="share-btn" onclick="shareLinkedIn(this)" data-share="Agentic Commerce Optimization: How agentic shopping engines evaluate products, and what commerce teams must do to compete." title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+  <button class="share-btn" onclick="shareX(this)" data-share="Agentic Commerce Optimization: How agentic shopping engines evaluate products, and what commerce teams must do to compete." title="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+  <button class="share-strip__close" onclick="dismissShareStrip()" title="Dismiss">×</button>
+</div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero__overlay"></div>
+  <div class="hero__bg"><div class="hero__grid"></div><div class="hero__glow hero__glow--1"></div><div class="hero__glow hero__glow--2"></div></div>
+  <!-- Top Nav: Logo + CTA -->
+  <nav class="hero-nav">
+    <a href="https://refibuy.ai/?hsLang=en" class="hero-nav__logo" target="_blank" rel="noopener">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/refibuy_white_boarder.png" alt="ReFiBuy" style="height:42px;width:auto;">
+    </a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#cta-readiness" class="hero-nav__cta">Get Your Readiness Report</a>
+  </nav>
+  <div class="hero__content">
+    <div class="hero__eyebrow">The ACO Guide</div>
+    <h1 class="hero__title">Agentic Commerce<br>Optimization</h1>
+    <p class="hero__subtitle">How agentic shopping engines actually evaluate products, and what commerce teams must do to compete.</p>
+    <div class="hero__readtime">
+      <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-1" class="hero__cta-start">Start Reading <span style="margin-left:4px;">↗</span></a>
+      <span class="hero__readtime-label">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+        15 min read
+      </span>
+    </div>
+  </div>
+  <div class="hero__scroll">Scroll<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></div>
+</section>
+<!-- CHAPTER NAV -->
+<div class="chapters-nav reveal visible">
+  <div class="chapters-nav__label">In This Guide</div>
+  <div class="chapters-grid">
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-1" class="chapters-grid__item"><span class="chapters-grid__num">01</span><span class="chapters-grid__title">Introduction</span></a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-2" class="chapters-grid__item"><span class="chapters-grid__num">02</span><span class="chapters-grid__title">The Shift in How Commerce Works</span></a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-3" class="chapters-grid__item"><span class="chapters-grid__num">03</span><span class="chapters-grid__title">How Products Are Actually Evaluated</span></a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-4" class="chapters-grid__item"><span class="chapters-grid__num">04</span><span class="chapters-grid__title">Defining Agentic Commerce Optimization</span></a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-5" class="chapters-grid__item"><span class="chapters-grid__num">05</span><span class="chapters-grid__title">What Readiness Actually Requires</span></a>
+    <a href="https://refibuy.ai/agentic-commerce-optimization-guide#chapter-6" class="chapters-grid__item"><span class="chapters-grid__num">06</span><span class="chapters-grid__title">Competing in the Age of Agentic Commerce</span></a>
+  </div>
+</div>
+<!-- CH1: INTRODUCTION -->
+<section class="section section--grey" id="chapter-1">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 01</div><h2 class="section__title">Introduction</h2></div>
+    <div class="reveal visible">
+      <p>For more than two decades, digital commerce operated on a stable assumption: if products were properly structured and optimized for search, they would be discovered. Discovery drove traffic. Traffic drove performance. That sequence shaped organizational design and rewarded teams that could drive rankings and clicks.</p>
+      <p>In the age of agentic commerce, <strong>that operating model is broken.</strong></p>
+      <p>Agentic shopping engines now interpret product data directly. They compare options and determine which products qualify before a shopper ever reaches a search results page or clicks a link. Evaluation happens upstream of traffic. Visibility is no longer decided at the page level.</p>
+    </div>
+    <div class="stat-callout reveal visible">
+      <div class="stat-callout__number">$500B</div>
+      <div class="stat-callout__text">Analysts estimate that by 2030, agentic commerce could represent $300 billion to $500 billion in U.S. online retail sales, roughly 15% to 25% of total e-commerce.¹</div>
+    </div>
+    <div class="reveal visible">
+      <p>This is not a feature update. It is a structural shift in how products are assessed and included. When qualification moves upstream, optimization must move with it.</p>
+    </div>
+    <div class="pullquote reveal visible" data-share="When qualification moves upstream, optimization must move with it.">
+      <p class="pullquote__text">When qualification moves upstream, optimization must move with it.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <p>This guide breaks down what changed, how products are actually evaluated in agentic commerce, and what commerce teams must do to compete when eligibility, not ranking, determines inclusion.</p>
+      <div class="footnote">¹ Bain &amp; Company. 2030 forecast: How agentic AI will reshape US retail. Published 2024.</div>
+    </div>
+  </div>
+</section>
+<!-- CH2: THE SHIFT -->
+<section class="section" id="chapter-2">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 02</div><h2 class="section__title">The Shift in How Commerce Works</h2></div>
+    <div class="reveal visible">
+      <p>Search engines and marketplaces spent two decades training commerce teams to strip their products down to the bare minimum. Google required a keyword. Amazon required a title and a bullet list. Nobody’s system could process the full product story, so the rational move was to send less information.</p>
+    </div>
+    <div class="reveal visible" style="margin: 44px 0;">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/ACO Guide Images-05.png" alt="" style="width:100%;height:auto;display:block;">
+    </div>
+    <div class="reveal visible">
+      <p>The result, compounding over 20 years: <strong>product data atrophied.</strong></p>
+      <p>This did not happen due to negligence. Every incentive pointed to keeping product catalogs clean and minimal: don’t overcomplicate the feed. The system rewarded compression. And it worked, under the old rules.</p>
+      <p>Then the system changed.</p>
+      <p>Agentic shopping engines do not want keywords. They want content and context: the full story of why a product should be recommended. And they make that determination before anyone visits your site.</p>
+    </div>
+    <div class="reveal visible" style="margin: 44px 0;">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/ACO Guide Images-02.jpg" alt="New Chain of Commerce" style="width:50%;height:auto;display:block;margin:0 auto;">
+    </div>
+    <div class="reveal visible"><p>Search engines retrieve product information, while agentic shopping engines comprehensively evaluate it.</p></div>
+    <div class="reveal visible" style="margin-top:16px;"><p>The irony is sharp. The engines powering the future of commerce now demand exactly what two decades of compression stripped away.</p></div>
+    <div class="reveal visible" style="margin-top:16px;"><p>Consumer behavior confirms this shift is well underway. Accenture reports that <strong>72% of consumers</strong> now use generative AI tools regularly, and among active users, AI is now the second most preferred source for purchase recommendations, behind only physical stores.²</p></div>
+    <div class="reveal visible" style="margin-top:16px;"><p>Discovery did not disappear. Decisioning moved upstream. And the product data most catalogs carry today was built for a world where that distinction did not exist.</p></div>
+    <div class="pullquote reveal visible" data-share="Discovery did not disappear. Decisioning moved upstream.">
+      <p class="pullquote__text">Discovery did not disappear. Decisioning moved upstream.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <div class="footnote">² Accenture. Me, my brand, and AI. Consumer Pulse Research. Published 2024.</div>
+    </div>
+  </div>
+</section>
+<!-- INTERSTITIAL -->
+<div class="interstitial"><div class="interstitial__text reveal visible"><span style="font-weight:500;color:rgba(255,255,255,0.5);font-size:1rem;">The legacy question was: how do we rank higher?</span><br><span style="margin-top:8px;display:inline-block;">The agentic question is different: does the engine include our products at all?</span></div></div>
+<!-- CH3: HOW PRODUCTS ARE EVALUATED -->
+<section class="section" id="chapter-3">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 03</div><h2 class="section__title">How Products Are Actually Evaluated</h2></div>
+    <div class="reveal visible">
+      <p>Agentic shopping engines evaluate products at the SKU level, pulling structured data, contextual content, and cross-source signals to build a representation of each product. That representation is called the <strong class="term">product card</strong>.</p>
+    </div>
+    <!-- Product Card Definition Box -->
+    <div class="reveal visible" style="margin: 44px 0;">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/ACO Guide Images-01.jpg" alt="Defined Term — Product Card" style="width:100%;height:auto;display:block;">
+    </div>
+    <div class="reveal visible"><p>The product card is the unit of competition in agentic commerce. Whether yours is strong enough to compete depends on four layers of evaluation.</p></div>
+    <!-- 30/70 Evaluation Layers -->
+    <div class="eval-layers">
+      <div class="eval-layer reveal visible">
+        <div class="eval-layer__left">
+          <div class="eval-layer__num">Layer 01</div>
+          <div class="eval-layer__title">Mapping</div>
+          <div class="eval-layer__question">Does the engine know what your product is?</div>
+        </div>
+        <div class="eval-layer__right">
+          <p>Before anything else can happen, the engine has to resolve your product to the correct product card. This is where product cards are born, and where most products silently fail before they ever reach evaluation.</p>
+          <p>Consider a performance bike pedal sold across multiple retailers. Variants, updated model years, and inconsistent identifiers can fragment how that pedal appears across feeds. If the signals do not resolve cleanly, the engine may build multiple incomplete product cards instead of one strong one, or no card at all. The product category does not matter. The failure mode is the same.</p>
+        </div>
+      </div>
+      <div class="eval-layer reveal visible">
+        <div class="eval-layer__left">
+          <div class="eval-layer__num">Layer 02</div>
+          <div class="eval-layer__title">Attributes</div>
+          <div class="eval-layer__question">Can the engine compare your product against alternatives?</div>
+        </div>
+        <div class="eval-layer__right">
+          <p>Once a product is mapped to the correct card, the engine needs structured attributes to evaluate it against competitors. For the bike pedal: cleat compatibility, weight, spindle material, float range, intended discipline.</p>
+          <p>For two decades, these fields were treated as optional. In agentic commerce, they are the dimensions on which inclusion is decided. If they are missing or inconsistent, the engine cannot confidently include your product when a shopper asks for a specific type of pedal.</p>
+        </div>
+      </div>
+      <div class="eval-layer reveal visible">
+        <div class="eval-layer__left">
+          <div class="eval-layer__num">Layer 03</div>
+          <div class="eval-layer__title">Attribute-Level Context</div>
+          <div class="eval-layer__question">Can the engine reason about your product, not just sort it?</div>
+        </div>
+        <div class="eval-layer__right">
+          <p>Structured attributes tell the engine what your product is. Context tells the engine why it matters for a specific shopper.</p>
+          <p>A pedal with “9 degrees of float” can be compared on that specification alone. But if the content explains that this float range “reduces knee strain on long endurance rides,” the engine can connect that attribute to a specific rider’s need. “Titanium spindles” indicate weight savings as a data point. When positioned as “improving power transfer on climbs,” they support a performance use case the shopper is describing.</p>
+          <p>Attributes make comparison possible. Context is what supports inclusion in the engine.</p>
+        </div>
+      </div>
+      <div class="eval-layer reveal visible">
+        <div class="eval-layer__left">
+          <div class="eval-layer__num">Layer 04</div>
+          <div class="eval-layer__title">Product-Level Context</div>
+          <div class="eval-layer__question">Does the engine have the full story?</div>
+        </div>
+        <div class="eval-layer__right">
+          <p>Beyond individual attributes, agentic shopping engines look for broader signals that complete the picture: reviews, FAQs, Q&amp;A content, and use-case descriptions. Some engines are formalizing these requirements, including structured Q&amp;A fields in their product feed specifications. These signals reinforce the product card the engine has assembled. Consistent content about durability, fit, and intended use builds confidence. Thin or contradictory content weakens it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="reveal visible"><p>Mapping gets a product recognized. Attributes make it comparable. Attribute-level context makes it relevant. Product-level context gives the engine confidence to recommend it. When any layer is weak, the product card is incomplete, and an incomplete card does not lose on ranking. It gets passed over entirely.</p></div>
+    <!-- Primary pull quote — dark card -->
+    <div class="pullquote reveal visible" data-share="The best way to cover the long tail of prompts a shopper might use is to tell every story about every product: every use case, every differentiator, every piece of context.">
+      <p class="pullquote__text">The best way to cover the long tail of prompts a shopper might use is to tell every story about every product: every use case, every differentiator, every piece of context. That is what the four layers of evaluation enable, and what two decades of compression left most catalogs unable to do.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <p>Products are not excluded because they are inferior. They are excluded because the product card is unclear, incomplete, or unmapped. And that exclusion happens silently.</p>
+      <p>When inclusion depends on the strength of the product card, optimization must occur at the catalog level.</p>
+    </div>
+  </div>
+</section>
+<!-- CH4: DEFINING ACO -->
+<section class="section" id="chapter-4">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 04</div><h2 class="section__title">Defining Agentic Commerce Optimization</h2></div>
+    <div class="reveal visible">
+      <p>Agentic shopping engines decide which products qualify before a shopper ever sees them. If evaluation determines inclusion, optimization must begin where evaluation occurs.</p>
+      <p><strong>Agentic Commerce Optimization (ACO)</strong> is the practice of governing how products are mapped, structured, and contextualized so they qualify for inclusion across agentic shopping engines. It operates at the product and catalog level, upstream of ranking, paid placement, or on-site experience.</p>
+      <p>That distinction separates three disciplines that are often conflated.</p>
+    </div>
+  </div>
+  <!-- OS Layers -->
+  <div class="container">
+    <div class="os-layers reveal visible">
+      <div class="os-layers__header">Operating System Layers of Commerce Optimization</div>
+      <div class="os-layers__stack">
+        <div class="os-layer os-layer--aco">
+          <div class="os-layer__badge">Upstream</div>
+          <div class="os-layer__left">
+            <div class="os-layer__level">Commerce Infrastructure</div>
+            <div class="os-layer__name">ACO</div>
+            <div class="os-layer__desc">Optimizes for whether your products are eligible, competitive, and actionable across agentic shopping engines, a commerce infrastructure discipline operating upstream of both. The goal is to ensure that when the engine evaluates your product, the product card it builds is strong enough to win the recommendation and close the transaction.</div>
+          </div>
+        </div>
+        <div class="os-layer os-layer--geo">
+          <div class="os-layer__left">
+            <div class="os-layer__level">Content-Level</div>
+            <div class="os-layer__name">GEO</div>
+            <div class="os-layer__desc">Optimizes for how content appears in AI-generated answers. The goal is credibility and presence within the AI’s response.</div>
+          </div>
+        </div>
+        <div class="os-layer os-layer--seo">
+          <div class="os-layer__left">
+            <div class="os-layer__level">Page-Level</div>
+            <div class="os-layer__name">SEO</div>
+            <div class="os-layer__desc">Optimizes for how pages rank in search results. The goal is visibility on a results page where the shopper makes the decision.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="reveal visible">
+      <p>Visibility and credibility matter. But if the product card the engine assembles is incomplete, the product falls out of consideration at the moment it matters most. The product card functions as a black box: like Amazon’s algorithm or Google’s ranking system, the weighting of inputs is proprietary and continuously evolving. Known inputs exist, but the logic governing inclusion will remain closed and dynamic.</p>
+      <p>When optimization moves upstream, competition shifts to the product card. Owning the product card means controlling how your product is represented and recommended across every agentic shopping engine. This is comparable to how the buy box determines who wins on Amazon, but instead of one marketplace, there are dozens of agentic surfaces, each applying its own evaluation logic. The competitive dynamics that have defined marketplace commerce for 20 years are now playing out across every major agentic engine simultaneously.</p>
+    </div>
+    <div class="reveal visible" style="margin-top:16px;">
+      <p>Because evaluation criteria change continuously, eligibility is not something an organization achieves once. ACO requires persistent governance: ongoing visibility into how products are evaluated, the ability to correct deficiencies at scale, and continuous monitoring as engines evolve.</p>
+    </div>
+    <div class="pullquote reveal visible" data-share="ACO requires persistent governance: ongoing visibility into how products are evaluated, the ability to correct deficiencies at scale, and continuous monitoring as engines evolve.">
+      <p class="pullquote__text">ACO requires persistent governance: ongoing visibility into how products are evaluated, the ability to correct deficiencies at scale, and continuous monitoring as engines evolve.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <p>Deloitte describes this shift as moving from visibility to action, where eligibility, accuracy, and execution converge inside agent workflows. The framing varies across advisory firms. The direction does not.³</p>
+      <p>ACO treats product data as commerce infrastructure. Inclusion is not assumed, but actively governed. This raises an immediate organizational question: who owns governance?</p>
+      <div class="footnote">³ Deloitte. Agentic Commerce: Redefining Retail Economics. Published December 2025.</div>
+    </div>
+  </div>
+</section>
+<!-- CH5: WHAT READINESS REQUIRES -->
+<section class="section" id="chapter-5">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 05</div><h2 class="section__title">What Readiness Actually Requires</h2></div>
+    <div class="reveal visible">
+      <p>Readiness is not achieved by publishing more content or refining page design. It requires governing product data as infrastructure.</p>
+      <p>In a page-led environment, visibility was treated as a marketing outcome. In an upstream evaluation environment, eligibility is a structural condition. It is shaped by how product information is mapped, structured, and contextualized across systems.</p>
+      <p>This changes accountability. Nobody owns product-level eligibility. Marketing manages brand messaging. Ecommerce manages the product page. Data engineering manages the feed. But the upstream determination of whether a product is evaluated and included across agentic shopping engines? That falls between all of them. It is an ownership vacuum at the center of the most consequential shift in digital commerce in 20 years.</p>
+      <p>Organizations moving earliest on this problem are appointing a single point of accountability: one person or team with the authority to cut across marketing, ecommerce, and data engineering to govern product-level eligibility as a unified function. The title varies, but the mandate is the same: someone has to own how products show up across every engine, not just one channel or one system.</p>
+    </div>
+    <div class="pullquote reveal visible" data-share="Readiness is not achieved by publishing more content or refining page design. It requires governing product data as infrastructure.">
+      <p class="pullquote__text">Readiness is not achieved by publishing more content or refining page design. It requires governing product data as infrastructure.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <p>When governance is fragmented, eligibility becomes inconsistent. When eligibility is inconsistent, inclusion becomes unpredictable.</p>
+      <p>The scale compounds the problem. Manually updating individual fields, one product at a time, is how many teams operate today. For a merchant managing hundreds or thousands of SKUs, manual optimization is not a resource problem. It is a structural impossibility. This does not scale with more writers. It requires a system.</p>
+      <p>Twenty years of treating product data as content created the atrophy. Treating it as infrastructure is how organizations rebuild. Infrastructure requires ownership, governance, and continuous investment. Content requires a brief and a deadline.</p>
+    </div>
+    <div class="reveal visible" style="margin: 44px 0;">
+      <img src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/ACO Guide Images-04.png" alt="" style="width:100%;height:auto;display:block;">
+    </div>
+    <div class="reveal visible">
+      <p>The question is no longer whether products perform once discovered. It is whether they are structured to qualify for inclusion in the first place.</p>
+    </div>
+  </div>
+</section>
+<!-- CH6: COMPETING -->
+<section class="section section--grey" id="chapter-6">
+  <div class="container">
+    <div class="reveal visible"><div class="section__eyebrow">Chapter 06</div><h2 class="section__title">Competing in the Age of Agentic Commerce</h2></div>
+    <div class="reveal visible">
+      <p>Understanding ACO changes how organizations evaluate their own exposure.</p>
+      <p>In an agentic commerce environment, competitive risk accumulates silently. It sits inside product cards, attribute gaps, inconsistent mapping, and fragmented governance across systems. The products most at risk are often the ones that appear healthy by legacy measures: ranked well, converting on-site, performing in paid channels.</p>
+      <p>The issue is rarely whether products exist. It is whether they are eligible for inclusion consistently.</p>
+      <p>This creates practical questions for commerce teams:</p>
+    </div>
+    <!-- Self-Assessment Checklist -->
+    <div class="checklist-card reveal visible">
+      <div class="checklist-card__header">ACO Self-Assessment</div>
+      <div class="checklist-card__body">
+        <div class="checklist-item"><div class="checklist-item__check"></div><p>Do you know which portions of your catalog meet eligibility criteria today?</p></div>
+        <div class="checklist-item"><div class="checklist-item__check"></div><p>Do you know where mapping breaks down across systems?</p></div>
+        <div class="checklist-item"><div class="checklist-item__check"></div><p>Do you know how changes in evaluation logic affect inclusion over time?</p></div>
+        <div class="checklist-item"><div class="checklist-item__check"></div><p>Who in your organization owns product-level eligibility, and is that ownership clear and resourced?</p></div>
+        <div class="checklist-item"><div class="checklist-item__check"></div><p>How does this shift change your P&amp;L assumptions and resource allocation?</p></div>
+      </div>
+    </div>
+    <div class="reveal visible">
+      <p>Most organizations rely on downstream signals to infer upstream conditions, optimizing product pages and media while assuming eligibility is intact. Current dashboards report what happened after the decision was made. The gap is upstream, and it is not something those signals are built to show.</p>
+      <p>Measurement in agentic commerce starts with establishing a baseline: tracking referral traffic from agentic shopping engines so you know where you stand today, understanding how your product cards score relative to competitors across a representative set of SKUs, and monitoring how shifts in evaluation logic affect inclusion over time. The data is early and evolving, but organizations that are not measuring at all are making decisions about a channel they cannot see.</p>
+    </div>
+    <div class="pullquote reveal visible" data-share="In a legacy search environment, performance was managed downstream. In an agentic commerce environment, inclusion must be governed upstream.">
+      <p class="pullquote__text">In a legacy search environment, performance was managed downstream. In an agentic commerce environment, inclusion must be governed upstream. The organizations that compete effectively are not those reacting to traffic changes. They are those governing eligibility before performance shifts appear.</p>
+      <div class="pullquote__share">
+        <span class="pullquote__share-label">Share</span>
+        <button class="share-btn" onclick="shareLinkedIn(this)" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></button>
+        <button class="share-btn" onclick="shareX(this)" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></button>
+        <button class="share-btn" onclick="copyQuote(this)" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- CTA SECTION -->
+<section class="cta-section" id="cta-readiness">
+  <div class="cta-section__arc cta-section__arc--1"></div>
+  <div class="cta-section__arc cta-section__arc--2"></div>
+  <div class="cta-section__content reveal visible">
+    <div class="section__eyebrow" style="color:var(--blue);text-align:center;margin-bottom:14px;">Assessing Agentic Readiness</div>
+    <h2 class="cta-section__title" style="font-size:clamp(1.3rem,2.4vw,1.7rem);margin-bottom:24px;">If eligibility determines inclusion, then readiness has to be measured upstream.</h2>
+    <p class="cta-section__desc">Your product may be correctly priced, in stock, and well reviewed. It may rank in traditional search and convert efficiently on-site. Yet across agentic shopping engines, its product card can still be incomplete, fragmented, or missing the context required for inclusion. When that happens, there is no notification. The product simply does not surface.</p>
+    <p class="cta-section__desc" style="margin-bottom:28px;">That gap between what dashboards report and what engines decide is where competitive risk now lives. Seeing it clearly is the first advantage. Acting on it is what creates separation.</p>
+    <p class="cta-section__desc" style="margin-bottom:28px;">If you want to understand where your catalog stands today, request your personalized Agentic Readiness Report.</p>
+    <a href="https://refibuy.ai/agentic-readiness?hsLang=en" class="btn-primary" target="_blank" rel="noopener">Get Your Readiness Report</a>
+    <!-- End share -->
+    <div class="end-share">
+      <div class="end-share__prompt">If this framing is useful to you, it’s probably useful to someone on your team.</div>
+      <div class="end-share__buttons">
+        <button class="end-share__btn" onclick="sharePageLinkedIn()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg> LinkedIn</button>
+        <button class="end-share__btn" onclick="sharePageX()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg> X / Twitter</button>
+        <button class="end-share__btn" onclick="copyPageLink()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg> Copy link</button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer style="background:var(--blue);padding:28px 24px;text-align:center;">
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">
+    <!-- Circle -->
+    <svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#CB2026"></circle></svg>
+    <!-- Triangle -->
+    <svg width="20" height="18" viewBox="0 0 20 18"><polygon points="10,0 20,18 0,18" fill="#FFCA23"></polygon></svg>
+    <!-- Rounded Square -->
+    <svg width="18" height="18" viewBox="0 0 18 18"><rect width="18" height="18" rx="3" fill="#098843"></rect></svg>
+  </div>
+  <span style="font-family:var(--font-body);font-size:0.75rem;color:rgba(255,255,255,0.7);">© 2026 ReFiBuy, Inc.</span>
+</footer>
+<!-- SCRIPTS -->
+<script src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/collectedforms.js" type="text/javascript" id="CollectedForms-49450182" crossorigin="anonymous" data-leadin-portal-id="49450182" data-leadin-env="prod" data-loader="hs-scriptloader" data-hsjs-portal="49450182" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/49450182.js" type="text/javascript" id="hs-analytics"></script><script src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/pixels.js" type="text/javascript" id="hs-ads-pixel-49450182" data-ads-portal-id="49450182" data-ads-env="prod" data-loader="hs-scriptloader" data-hsjs-portal="49450182" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/banner.js" type="text/javascript" id="cookieBanner-49450182" data-cookieconsent="ignore" data-hs-ignore="true" data-loader="hs-scriptloader" data-hsjs-portal="49450182" data-hsjs-env="prod" data-hsjs-hublet="na1"></script><script>
+  const PAGE_URL = 'https://refibuy.ai/agentic-commerce-optimization-guide';
+  const progressNav = document.getElementById('progressNav');
+  const hero = document.getElementById('hero');
+  const progressBar = document.getElementById('progressBar');
+  const shareStrip = document.getElementById('shareStrip');
+  let shareStripDismissed = false;
+  let shareStripShown = false;
+  // Section tracking
+  const sections = ['chapter-1','chapter-2','chapter-3','chapter-4','chapter-5','chapter-6','cta-readiness'];
+  const navLinks = document.querySelectorAll('.progress-nav__section');
+  function handleScroll() {
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    progressNav.classList.toggle('visible', window.scrollY > heroBottom - 60);
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+    // Active section
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('data-section') === current);
+    });
+    // 50% share strip
+    if (!shareStripDismissed && scrolled > 45 && scrolled < 65) {
+      if (!shareStripShown) { shareStrip.classList.add('visible'); shareStripShown = true; }
+    } else {
+      shareStrip.classList.remove('visible');
+    }
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  // Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  reveals.forEach(el => observer.observe(el));
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) { window.scrollTo({ top: target.offsetTop - 56, behavior: 'smooth' }); }
+    });
+  });
+  // Share helpers
+  function getQuoteText(btn) {
+    const pq = btn.closest('.pullquote') || btn.closest('[data-share]');
+    if (pq) return pq.getAttribute('data-share');
+    return 'Agentic Commerce Optimization: How agentic shopping engines evaluate products, and what commerce teams must do to compete.';
+  }
+  function shareLinkedIn(btn) {
+    const quote = getQuoteText(btn);
+    const text = '"' + quote + '" \u2014 ACO Quick Guide, ReFiBuy\n\n' + PAGE_URL;
+    var openLinkedIn = function() { setTimeout(function() { window.open('https://www.linkedin.com/feed/', '_blank', 'width=600,height=500,left=200,top=100'); }, 800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied \u2014 paste into LinkedIn');
+        openLinkedIn();
+      }).catch(function() { fallbackCopy(text); showToast('Copied \u2014 paste into LinkedIn'); openLinkedIn(); });
+    } else {
+      fallbackCopy(text);
+      showToast('Copied \u2014 paste into LinkedIn');
+      openLinkedIn();
+    }
+  }
+  function shareX(btn) {
+    const quote = getQuoteText(btn);
+    const text = '"' + quote + '"\n\n\u2014 ACO Quick Guide, ReFiBuy';
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(PAGE_URL), '_blank', 'width=600,height=400');
+  }
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard'); }).catch(function() { fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.top = '-9999px';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); showToast('Copied to clipboard'); } catch(e) { showToast('Copy failed'); }
+    document.body.removeChild(ta);
+  }
+  function copyQuote(btn) {
+    const quote = getQuoteText(btn);
+    copyToClipboard('"' + quote + '" \u2014 ACO Quick Guide, ReFiBuy (' + PAGE_URL + ')');
+  }
+  function sharePageLinkedIn() { window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(PAGE_URL), '_blank'); }
+  function sharePageX() { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent('Worth reading: ACO Quick Guide from ReFiBuy \u2014 how agentic shopping engines evaluate products.') + '&url=' + encodeURIComponent(PAGE_URL), '_blank'); }
+  function copyPageLink() { copyToClipboard(PAGE_URL); showToast('Link copied'); }
+  function dismissShareStrip() { shareStripDismissed = true; shareStrip.classList.remove('visible'); }
+  function showToast(msg) { var t = document.getElementById('shareToast'); t.textContent = msg; t.classList.add('visible'); setTimeout(function() { t.classList.remove('visible'); }, 2000); }
+</script>
+
+
+<!-- HubSpot performance collection script -->
+<script defer="" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/embed.js"></script>
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "landing-page"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/refibuy.ai\/agentic-commerce-optimization-guide"]);
+_hsq.push(["setPageId", "208838661522"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": 208838661522,
+    "legacyPageId": "208838661522",
+    "contentFolderId": null,
+    "contentGroupId": null,
+    "abTestId": null,
+    "languageVariantId": 208838661522,
+    "languageCode": "en",
+    
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async="" defer="" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/49450182(1).js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    render_id: "f4e3f0db-1f9f-4001-9baa-dd8ad3c7ddee",
+    ticks: 1779203731357,
+    page_id: 208838661522,
+    
+    content_group_id: 0,
+    portal_id: 49450182,
+    app_hs_base_url: "https://app.hubspot.com",
+    cp_hs_base_url: "https://cp.hubspot.com",
+    language: "en",
+    analytics_page_type: "landing-page",
+    scp_content_type: "",
+    
+    analytics_page_id: "208838661522",
+    category_id: 1,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer="" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/index.js"></script>
+
+
+
+
+
+
+
+<iframe owner="archetype" title="archetype" style="display: none; visibility: hidden;" src="./ReFiBuy _ The Agentic Commerce Optimization Guide_files/saved_resource.html"></iframe></body></html>

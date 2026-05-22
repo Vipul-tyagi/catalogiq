@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CatalogIQ — AI Commerce Enrichment Framework</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1A1614;
+  --paper: #FAF6F0;
+  --cream: #F0EBE2;
+  --warm: #E8E0D4;
+  --border: #D4CABC;
+  --accent: #C8420E;
+  --green: #1A7A3A;
+  --blue: #2A5AB8;
+  --yellow: #9A7A00;
+  --muted: #7A7068;
+  --surface: #FFFFFF;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+/* HEADER */
+.doc-header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 24px;
+  margin-bottom: 40px;
+}
+.doc-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.doc-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+/* SECTION HEADINGS */
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 48px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 28px 0 10px;
+  color: var(--accent);
+}
+h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 20px 0 6px;
+  color: var(--ink);
+}
+p { margin-bottom: 14px; }
+strong { font-weight: 600; }
+/* SECTION BAR */
+.section-bar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 48px 0 24px;
+}
+/* LAYER CARDS */
+.layer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+.layer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px 14px;
+}
+.layer-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.layer-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.layer-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+/* FIELD TABLE */
+.field-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 28px;
+  font-size: 12.5px;
+}
+.field-table th {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 12px;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.field-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.field-table tr:nth-child(even) td { background: var(--cream); }
+.field-table tr:last-child td { border-bottom: none; }
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.tag-req { background: #FCEBEB; color: #A32D2D; }
+.tag-rec { background: #FFF8E1; color: #854F0B; }
+.tag-b2b { background: #EAF3DE; color: #3B6D11; }
+.tag-ai  { background: #EBF0FC; color: #2A5AB8; }
+.tag-ip  { background: #FFF0EB; color: #C8420E; }
+/* VERTICAL COLUMNS */
+.vertical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 20px 0 28px;
+}
+.vertical-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px;
+}
+.vertical-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.vertical-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.vertical-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.vertical-subtitle {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+.field-list {
+  list-style: none;
+  margin: 0;
+}
+.field-list li {
+  font-size: 11.5px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--cream);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--ink);
+}
+.field-list li:last-child { border-bottom: none; }
+.field-list .unique {
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  padding: 1px 5px;
+  background: #FFF0EB;
+  border-radius: 2px;
+}
+/* PIPELINE STEPS */
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0 28px;
+  position: relative;
+}
+.pipeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.pipeline-step {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+.step-num {
+  width: 40px;
+  height: 40px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 13px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.step-num.accent { background: var(--accent); }
+.step-num.green  { background: var(--green); }
+.step-num.blue   { background: var(--blue); }
+.step-body { padding-top: 8px; }
+.step-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+.step-ip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  background: #FFF0EB;
+  padding: 3px 8px;
+  display: inline-block;
+  border-radius: 2px;
+}
+/* SCORING MATRIX */
+.score-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 28px;
+  font-size: 12px;
+}
+.score-matrix th {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.score-matrix th:first-child { text-align: left; }
+.score-matrix td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+.score-matrix td:first-child { text-align: left; font-weight: 500; }
+.score-matrix tr:nth-child(even) td { background: var(--cream); }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-req  { background: #B83030; }
+.dot-rec  { background: #9A7A00; }
+.dot-opt  { background: #D4CABC; }
+.dot-uniq { background: var(--accent); }
+/* IP ROADMAP */
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin: 20px 0 28px;
+}
+.roadmap-col {
+  padding: 20px 18px;
+  border-right: 1px solid var(--border);
+}
+.roadmap-col:last-child { border-right: none; }
+.roadmap-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.roadmap-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.roadmap-items {
+  list-style: none;
+}
+.roadmap-items li {
+  font-size: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--cream);
+  color: var(--ink);
+  display: flex;
+  gap: 8px;
+}
+.roadmap-items li::before {
+  content: '→';
+  color: var(--accent);
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-top: 2px;
+}
+.roadmap-items li:last-child { border-bottom: none; }
+/* CALLOUT */
+.callout {
+  border-left: 4px solid var(--accent);
+  background: #FFF0EB;
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.callout strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+.callout.green { border-color: var(--green); background: #EAF3DE; }
+.callout.green strong { color: var(--green); }
+.callout.blue  { border-color: var(--blue);  background: #EBF0FC; }
+.callout.blue  strong { color: var(--blue); }
+
+/* SCORING BAR */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.score-label { font-size: 12px; min-width: 200px; }
+.score-track {
+  flex: 1;
+  height: 20px;
+  background: var(--cream);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.score-fill {
+  height: 100%;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: white;
+}
+/* MOAT DIAGRAM */
+.moat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0 28px;
+}
+.moat-side {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px;
+}
+.moat-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.moat-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--cream);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.moat-item:last-child { border-bottom: none; }
+.moat-item .m-title { font-weight: 600; margin-bottom: 2px; }
+.moat-item .m-desc { font-size: 11px; color: var(--muted); }
+hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-kicker">CatalogIQ · Internal Strategy Document</div>
+  <h1>The AI Commerce<br>Enrichment Framework</h1>
+  <p style="font-size:15px;color:var(--muted);max-width:680px;margin-bottom:12px;font-weight:300">
+    A systematic methodology for building proprietary enrichment logic
+    across B2B verticals — promotional products, pet supply, and ecommerce.
+    How to construct it, compound it, and defend it as IP.
+  </p>
+  <div class="doc-meta">Version 1.0 · May 2026 · Confidential</div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">01 · What Framework We Are Actually Using</div>
+
+<p>We did not start with a framework. We started with a question: <strong>why does Kodiak Wholesale appear in ChatGPT when zero PPAI distributors do?</strong> The framework emerged from trying to answer that question systematically. It has a name now. We call it the <strong>STRIDE Enrichment Framework</strong>.</p>
+
+<p>STRIDE stands for: <strong>S</strong>ignal Audit → <strong>T</strong>axonomy Mapping → <strong>R</strong>aw Data Acquisition → <strong>I</strong>ntent Enrichment → <strong>D</strong>istribution → <strong>E</strong>vidence Loop. Each step builds on the last. The evidence loop at the end feeds back into the signal audit at the beginning. That feedback loop is how the IP compounds over time.</p>
+
+<div class="layer-grid">
+  <div class="layer-card">
+    <div class="layer-num">S</div>
+    <div class="layer-name">Signal Audit</div>
+    <div class="layer-desc">Run structured buyer-intent queries. Record who appears, what fields get cited, what language drives citations. This is your measurement layer.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-num">T</div>
+    <div class="layer-name">Taxonomy Mapping</div>
+    <div class="layer-desc">Map the vertical's data standards to ACP/GMC/UCP field schemas. Identify what exists in source data vs what must be generated.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-num">R</div>
+    <div class="layer-name">Raw Data Acquisition</div>
+    <div class="layer-desc">Pull from the vertical's authoritative data source. For promo: PromoStandards. For pet: NAPPA/distributor APIs. For ecommerce: product feeds.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-num">I</div>
+    <div class="layer-name">Intent Enrichment</div>
+    <div class="layer-desc">Generate the fields that do not exist in source data. Use-case tags, buyer-intent descriptions, FAQ pairs, procurement language. This is the LLM layer.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-num">D</div>
+    <div class="layer-name">Distribution</div>
+    <div class="layer-desc">Format enriched data as ACP feed (ChatGPT), GMC feed (Google AI Mode), UCP manifest (Universal Commerce Protocol). Push to endpoints.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-num">E</div>
+    <div class="layer-name">Evidence Loop</div>
+    <div class="layer-desc">Re-run signal audit. Measure citation rate change. Record which fields drove lift. Feed findings back into enrichment logic. This is how IP compounds.</div>
+  </div>
+  <div class="layer-card" style="background:var(--cream);grid-column:3/5">
+    <div class="layer-num" style="color:var(--green)">↻</div>
+    <div class="layer-name">The Compounding Loop</div>
+    <div class="layer-desc">Each Evidence Loop cycle produces a finding. Each finding improves enrichment accuracy. Across 20 customers and 3 verticals, these findings become a proprietary dataset that no competitor can replicate without running the same experiment for the same duration. This is the IP moat.</div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>The Core Insight</strong>
+  The framework we are using is fundamentally a <em>measurement-first enrichment system</em>. Traditional SEO tools enrich first and measure later. STRIDE measures first so that enrichment is targeted at the specific fields that drive AI citation lift — not at all possible fields. This is why production time drove +18pp citation lift in our drinkware experiment while MOQ declined. The measurement told us which field to prioritize before we enriched.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">02 · The Seven Layers of Any Enrichment Record</div>
+
+<p>Every product record — regardless of vertical — needs to be assessed against seven layers. The layers are universal. The specific fields within each layer are vertical-specific. This is the structural insight that makes the framework scalable across verticals.</p>
+
+<table class="field-table">
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Purpose</th>
+      <th>ACP Requirement</th>
+      <th>Promo Products</th>
+      <th>Pet Supply</th>
+      <th>Ecommerce (General)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Product Identity</strong></td>
+      <td>What is this exactly?</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>id, title with MOQ + deco method, brand (supplier)</td>
+      <td>id, title with species + weight + formula, brand</td>
+      <td>id, title with size + material + variant, brand, GTIN</td>
+    </tr>
+    <tr>
+      <td><strong>2. Pricing Architecture</strong></td>
+      <td>What does it cost at what quantity?</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>Base price at MOQ, price_breaks array, setup_charge, LTM</td>
+      <td>Price at case quantity, case vs unit pricing, subscription pricing</td>
+      <td>price, sale_price, price_breaks, MSRP, bundle pricing</td>
+    </tr>
+    <tr>
+      <td><strong>3. Availability + Fulfillment</strong></td>
+      <td>Can I get it? When?</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>in_stock, production_time_standard, production_time_rush</td>
+      <td>in_stock, ship_date, subscription_cadence, autoship available</td>
+      <td>in_stock, delivery_days, shipping_methods, fulfillment_source</td>
+    </tr>
+    <tr>
+      <td><strong>4. Specification Fields</strong></td>
+      <td>Exact comparison criteria</td>
+      <td><span class="tag tag-rec">Recommended</span></td>
+      <td>decoration_method, imprint_area, material, capacity, dimensions</td>
+      <td>species_compatibility, life_stage, weight, ingredients, protein_pct</td>
+      <td>material, dimensions, weight, color, size, compatibility</td>
+    </tr>
+    <tr>
+      <td><strong>5. B2B / Buyer Context</strong></td>
+      <td>Who buys this and why?</td>
+      <td><span class="tag tag-b2b">B2B Critical</span></td>
+      <td>MOQ, price_breaks, buyer_intent_description, use_case_tags, event_type</td>
+      <td>min_case_quantity, bulk_discount, wholesale_available, buyer_type</td>
+      <td>bundle_size, B2B_pricing, procurement_notes, volume_discounts</td>
+    </tr>
+    <tr>
+      <td><strong>6. Trust + Safety Fields</strong></td>
+      <td>Is it safe, certified, returnable?</td>
+      <td><span class="tag tag-rec">Recommended</span></td>
+      <td>return_policy (decorated = no return), certifications, seller_name</td>
+      <td>AAFCO_statement, safety_certifications, recall_history, vet_recommended</td>
+      <td>return_policy, warranty, certifications, safety_warnings, CPSC</td>
+    </tr>
+    <tr>
+      <td><strong>7. AI-Native Fields</strong></td>
+      <td>Fields that exist only for AI matching</td>
+      <td><span class="tag tag-ai">AI-Specific</span></td>
+      <td>use_case_tags, buyer_intent_description, FAQ pairs, occasion_tags</td>
+      <td>use_case_tags (breed-specific, life-stage, health-condition), FAQ pairs</td>
+      <td>use_case_tags, comparison_context, FAQ pairs, review_summary</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout blue">
+  <strong>The Critical Distinction</strong>
+  Layers 1-3 are infrastructure — without them, the feed is rejected. Layers 4-6 are quality — they improve ranking within the feed. Layer 7 is the moat — no source data contains these fields. They must be generated by your enrichment pipeline and they are what drives semantic query matching. Every competitor who builds a feed tool can do Layers 1-6. Only you can do Layer 7 correctly for each vertical because Layer 7 requires vertical-specific domain knowledge about how buyers in each industry actually phrase their queries.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">03 · Vertical-Specific Enrichment Logic</div>
+
+<p>The framework is universal. The enrichment logic is vertical-specific. Here is what we know now and what we need to build for each vertical.</p>
+
+<div class="vertical-grid">
+
+  <!-- PROMO PRODUCTS -->
+  <div class="vertical-card">
+    <div class="vertical-header">
+      <div class="vertical-icon" style="background:#FFF0EB">🏷</div>
+      <div>
+        <div class="vertical-title">Promotional Products</div>
+        <div class="vertical-subtitle">PromoStandards / PPAI · $26B market</div>
+      </div>
+    </div>
+    <h4 style="margin-top:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Unique Required Fields</h4>
+    <ul class="field-list">
+      <li>Decoration method <span class="unique">Unique</span></li>
+      <li>Imprint area dimensions <span class="unique">Unique</span></li>
+      <li>Setup charge per location <span class="unique">Unique</span></li>
+      <li>Production time (std + rush) <span class="unique">Unique</span></li>
+      <li>MOQ + price break array <span class="unique">Unique</span></li>
+      <li>LTM charge <span class="unique">Unique</span></li>
+      <li>Event type / occasion tags <span class="unique">Generated</span></li>
+      <li>Corporate buyer intent desc <span class="unique">Generated</span></li>
+    </ul>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:14px">Data Source</h4>
+    <p style="font-size:11.5px;color:var(--ink)">PSRESTful / PromoStandards PDS + PPC + INV + MCS. Covers 500+ suppliers via one API.</p>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:8px">IP Status</h4>
+    <p style="font-size:11.5px;color:var(--green);font-weight:500">Most advanced. Normalization library in development. Baseline experiment running.</p>
+  </div>
+
+  <!-- PET SUPPLY -->
+  <div class="vertical-card">
+    <div class="vertical-header">
+      <div class="vertical-icon" style="background:#EAF3DE">🐾</div>
+      <div>
+        <div class="vertical-title">Pet Supply</div>
+        <div class="vertical-subtitle">NAPPA / Distributors · $50B market</div>
+      </div>
+    </div>
+    <h4 style="margin-top:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Unique Required Fields</h4>
+    <ul class="field-list">
+      <li>Species compatibility <span class="unique">Unique</span></li>
+      <li>Life stage (puppy/adult/senior) <span class="unique">Unique</span></li>
+      <li>Breed size compatibility <span class="unique">Unique</span></li>
+      <li>Protein % + ingredient list <span class="unique">Unique</span></li>
+      <li>AAFCO nutritional statement <span class="unique">Unique</span></li>
+      <li>Health condition targeting <span class="unique">Generated</span></li>
+      <li>Vet recommended status <span class="unique">Sourced</span></li>
+      <li>Recall history field <span class="unique">Monitored</span></li>
+    </ul>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:14px">Data Source</h4>
+    <p style="font-size:11.5px;color:var(--ink)">No universal standard like PromoStandards. Each major distributor (Chewy, Petco, PetSmart, NAPPA members) has own API or data feed.</p>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:8px">IP Status</h4>
+    <p style="font-size:11.5px;color:var(--yellow);font-weight:500">Not started. High-value because pet queries are highly specific and buyers are safety-conscious.</p>
+  </div>
+
+  <!-- ECOMMERCE -->
+  <div class="vertical-card">
+    <div class="vertical-header">
+      <div class="vertical-icon" style="background:#EBF0FC">🛒</div>
+      <div>
+        <div class="vertical-title">Ecommerce (General)</div>
+        <div class="vertical-subtitle">Horizontal / Any vertical · $6T market</div>
+      </div>
+    </div>
+    <h4 style="margin-top:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Unique Required Fields</h4>
+    <ul class="field-list">
+      <li>GTIN / UPC / EAN <span class="unique">Source</span></li>
+      <li>Google Product Taxonomy ID <span class="unique">Mapped</span></li>
+      <li>Variant group_id <span class="unique">Normalized</span></li>
+      <li>Shipping weight + dimensions <span class="unique">Required</span></li>
+      <li>Return policy (structured) <span class="unique">Structured</span></li>
+      <li>Comparison context tags <span class="unique">Generated</span></li>
+      <li>Review summary snippet <span class="unique">Generated</span></li>
+      <li>Bundle recommendation pairs <span class="unique">Generated</span></li>
+    </ul>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:14px">Data Source</h4>
+    <p style="font-size:11.5px;color:var(--ink)">Shopify product API, WooCommerce REST, Magento API, or flat CSV/XML export. Most merchants have existing product data in some format.</p>
+    <h4 style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:8px">IP Status</h4>
+    <p style="font-size:11.5px;color:var(--blue);font-weight:500">Picolo Tales experiment running. General ecommerce is the horizontal expansion path once vertical moats are established.</p>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">04 · The Enrichment Pipeline Architecture</div>
+
+<p>Every record passing through the pipeline goes through seven steps in sequence. The steps are the same across verticals. The specific transformation logic at each step is vertical-specific. This is where the IP lives.</p>
+
+<div class="pipeline">
+  <div class="pipeline-step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Ingest — Pull from authoritative source</div>
+      <div class="step-desc">Connect to the vertical's primary data source. For promo: PSRESTful API (PDS + PPC + INV + MCS endpoints). For pet: distributor-specific APIs or feed files. For ecommerce: platform API or CSV. Store raw response as immutable source-of-truth record.</div>
+      <span class="step-ip">IP component: connector library per vertical + authentication management</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num accent">2</div>
+    <div class="step-body">
+      <div class="step-title">Normalize — Resolve vertical-specific quirks</div>
+      <div class="step-desc">Map source field names to canonical schema. Standardize color names (SanMar "Coastal Blue" → "Navy"). Resolve size codes. Handle missing fields. Flatten variant arrays into group_id structure. This normalization library is built from real supplier data and takes months to make production-quality.</div>
+      <span class="step-ip">IP component: normalization rules library — grows with each supplier processed</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num accent">3</div>
+    <div class="step-body">
+      <div class="step-title">Score — Assess completeness against ACP requirements</div>
+      <div class="step-desc">Run each record against the 12-field ACP readiness rubric. Score 0-100. Flag critical gaps (missing price, missing image, missing required identity fields). Flag high-value gaps (missing production time, missing decoration method). Prioritize enrichment effort by revenue-weighted field impact score.</div>
+      <span class="step-ip">IP component: vertical-specific scoring rubric + revenue-weighting model</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num green">4</div>
+    <div class="step-body">
+      <div class="step-title">Enrich — Generate AI-native fields via LLM</div>
+      <div class="step-desc">This is the core IP step. Use Claude API to generate: ACP-optimized title, procurement-intent description, 5-8 FAQ pairs, use-case tags, buyer-intent description. The prompt engineering for each vertical is built from empirical data about which query types and which language patterns drive AI citations. Each Evidence Loop cycle improves the prompts.</div>
+      <span class="step-ip">IP component: vertical-specific prompt library — the primary defensible asset</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num green">5</div>
+    <div class="step-body">
+      <div class="step-title">Validate — Ensure feed compliance</div>
+      <div class="step-desc">Check all required fields present and valid. Verify price is numeric. Confirm image URLs resolve. Validate Schema.org property names. Check group_id consistency across variants. Flag identifier_exists=false for products without GTIN. Run the equivalent of Google Rich Results Test programmatically.</div>
+      <span class="step-ip">IP component: validation ruleset + error classification system</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num blue">6</div>
+    <div class="step-body">
+      <div class="step-title">Format + Distribute — Push to AI commerce endpoints</div>
+      <div class="step-desc">Serialize to JSONL (ACP), XML (GMC), and UCP manifest. Push ACP feed via SFTP to OpenAI endpoint (up to every 15 minutes for live pricing). Push GMC feed to Google Merchant Center. Publish UCP manifest at /.well-known/ucp. Track submission confirmations and feed health status.</div>
+      <span class="step-ip">IP component: multi-format serializer + endpoint management per customer</span>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num blue">7</div>
+    <div class="step-body">
+      <div class="step-title">Measure — Run Evidence Loop</div>
+      <div class="step-desc">Run the same 20 buyer-intent queries that were run at baseline. Record result type per query per platform. Calculate citation rate change. Identify which specific fields correlated with citation lift. Feed findings back into Step 4 prompt library. Aggregate anonymized findings across all customers.</div>
+      <span class="step-ip">IP component: query taxonomy library + citation tracking database + cross-customer aggregation</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">05 · The Scoring Rubric — How We Measure ACP Readiness</div>
+
+<p>The current 12-field rubric was developed empirically from the drinkware experiment. Each field is weighted by its observed citation impact. Fields that appeared in 80%+ of AI responses get higher weight than fields that appeared in 20% of responses. The rubric evolves with each Evidence Loop cycle.</p>
+
+<table class="score-matrix">
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>ACP Status</th>
+      <th>Drinkware Citation Rate</th>
+      <th>Weight (0-10)</th>
+      <th>Promo Products</th>
+      <th>Pet Supply</th>
+      <th>Ecommerce</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Price (numeric)</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>58%</td>
+      <td>10</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+    </tr>
+    <tr>
+      <td>Product Image URL</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>95%</td>
+      <td>10</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+    </tr>
+    <tr>
+      <td>Availability (in_stock)</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>95%</td>
+      <td>10</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+      <td><span class="dot dot-req"></span> Universal</td>
+    </tr>
+    <tr>
+      <td>Title (ACP-optimized)</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>95%</td>
+      <td>9</td>
+      <td><span class="dot dot-req"></span> +MOQ +Deco</td>
+      <td><span class="dot dot-req"></span> +Species +Weight</td>
+      <td><span class="dot dot-req"></span> +Variant +Size</td>
+    </tr>
+    <tr>
+      <td>Description (spec-dense)</td>
+      <td><span class="tag tag-req">Required</span></td>
+      <td>95%</td>
+      <td>9</td>
+      <td><span class="dot dot-req"></span> Procurement intent</td>
+      <td><span class="dot dot-req"></span> Safety + nutrition</td>
+      <td><span class="dot dot-req"></span> Comparison context</td>
+    </tr>
+    <tr>
+      <td>Decoration Method / Spec method</td>
+      <td><span class="tag tag-rec">Recommended</span></td>
+      <td>85%</td>
+      <td>9</td>
+      <td><span class="dot dot-uniq"></span> Laser/Screen/Digital</td>
+      <td><span class="dot dot-opt"></span> N/A</td>
+      <td><span class="dot dot-opt"></span> N/A</td>
+    </tr>
+    <tr>
+      <td>Production/Delivery Time</td>
+      <td><span class="tag tag-rec">Recommended</span></td>
+      <td>58% (+18pp gain)</td>
+      <td>8</td>
+      <td><span class="dot dot-uniq"></span> Std + Rush days</td>
+      <td><span class="dot dot-req"></span> Ship date + autoship</td>
+      <td><span class="dot dot-req"></span> Delivery window</td>
+    </tr>
+    <tr>
+      <td>MOQ / Minimum Order</td>
+      <td><span class="tag tag-b2b">B2B Critical</span></td>
+      <td>47%</td>
+      <td>8</td>
+      <td><span class="dot dot-uniq"></span> Units + increments</td>
+      <td><span class="dot dot-rec"></span> Case qty</td>
+      <td><span class="dot dot-rec"></span> Bundle min</td>
+    </tr>
+    <tr>
+      <td>Price Breaks (tier pricing)</td>
+      <td><span class="tag tag-b2b">B2B Critical</span></td>
+      <td>47%</td>
+      <td>7</td>
+      <td><span class="dot dot-uniq"></span> 24/48/72/144+ tiers</td>
+      <td><span class="dot dot-rec"></span> Case vs unit</td>
+      <td><span class="dot dot-rec"></span> Volume discounts</td>
+    </tr>
+    <tr>
+      <td>Use-Case / Occasion Tags</td>
+      <td><span class="tag tag-ai">AI-Native</span></td>
+      <td>Not in source data</td>
+      <td>8</td>
+      <td><span class="dot dot-uniq"></span> Trade show / onboarding</td>
+      <td><span class="dot dot-uniq"></span> Breed / condition</td>
+      <td><span class="dot dot-uniq"></span> Gift / occasion</td>
+    </tr>
+    <tr>
+      <td>FAQ Pairs (structured)</td>
+      <td><span class="tag tag-ai">AI-Native</span></td>
+      <td>Correlates with conv. queries</td>
+      <td>7</td>
+      <td><span class="dot dot-uniq"></span> MOQ / deco / rush</td>
+      <td><span class="dot dot-uniq"></span> Safety / feeding</td>
+      <td><span class="dot dot-uniq"></span> Returns / sizing</td>
+    </tr>
+    <tr>
+      <td>Schema.org additionalProperty</td>
+      <td><span class="tag tag-ai">AI-Native</span></td>
+      <td>Unlocks Google AI Mode</td>
+      <td>7</td>
+      <td><span class="dot dot-uniq"></span> All spec fields structured</td>
+      <td><span class="dot dot-uniq"></span> Nutrition structured</td>
+      <td><span class="dot dot-uniq"></span> All specs structured</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- LEGEND -->
+<div style="display:flex;gap:20px;margin-bottom:28px;font-size:11px;font-family:'JetBrains Mono',monospace">
+  <span><span class="dot dot-req" style="margin-right:5px"></span>Required / Universal</span>
+  <span><span class="dot dot-rec" style="margin-right:5px"></span>Recommended</span>
+  <span><span class="dot dot-opt" style="margin-right:5px"></span>Optional / N/A</span>
+  <span><span class="dot dot-uniq" style="margin-right:5px"></span>Vertical-Unique / High IP Value</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">06 · How the IP Compounds Over Time</div>
+
+<p>The framework produces three categories of IP. Each category compounds differently. Understanding this is critical for prioritizing what to build and when.</p>
+
+<div class="moat">
+  <div class="moat-side">
+    <div class="moat-title" style="color:var(--accent)">Category 1 — Normalization Knowledge</div>
+    <div class="moat-item">
+      <div class="m-title">Supplier-specific quirk library</div>
+      <div class="m-desc">SanMar uses "Coastal Blue" for Navy. PCNA uses non-standard size codes. HIT has incomplete decorationArray data. These quirks take months to discover and map. Every supplier processed adds to the library.</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">How it compounds</div>
+      <div class="m-desc">Linear with number of suppliers processed. After 50 suppliers, normalization quality is dramatically better than a new entrant starting from zero. After 200, it is practically unreplicable in under 12 months.</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">Build rate</div>
+      <div class="m-desc">Grows with each customer catalog processed. 10 customers across 30 suppliers = 30 supplier quirk profiles. Passive accumulation.</div>
+    </div>
+  </div>
+
+  <div class="moat-side">
+    <div class="moat-title" style="color:var(--green)">Category 2 — Prompt Engineering Library</div>
+    <div class="moat-item">
+      <div class="m-title">Vertical-specific enrichment prompts</div>
+      <div class="m-desc">The Claude API prompts that generate use-case tags, buyer-intent descriptions, and FAQ pairs for each vertical. Each prompt iteration is informed by Evidence Loop data showing which language patterns drive citation lift.</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">How it compounds</div>
+      <div class="m-desc">Exponential with measurement cycles. Each 14-day evidence loop improves prompts. Better prompts produce better enrichment. Better enrichment produces more citations. More citations produce better measurement data. Classic compounding loop.</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">Build rate</div>
+      <div class="m-desc">One measurement cycle every 14 days = 26 improvement cycles per year. After 6 months you have prompts that have been iterated 13 times. A new entrant starts at iteration 0.</div>
+    </div>
+  </div>
+
+  <div class="moat-side" style="border-right:1px solid var(--border)">
+    <div class="moat-title" style="color:var(--blue)">Category 3 — Citation Dataset</div>
+    <div class="moat-item">
+      <div class="m-title">Cross-customer AI citation database</div>
+      <div class="m-desc">Anonymized data showing which fields drove citation lift for which query types across which platforms. This dataset answers questions nobody in the industry has answered: which PromoStandards fields predict ChatGPT citation rate?</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">How it compounds</div>
+      <div class="m-desc">Network effects. 1 customer = 60 data points per cycle. 10 customers = 600 per cycle. 50 customers = 3,000 per cycle. Statistical significance improves with scale. Findings become publishable research that attracts more customers.</div>
+    </div>
+    <div class="moat-item">
+      <div class="m-title">Build rate</div>
+      <div class="m-desc">Grows with customer count and measurement frequency. 5 customers running bi-weekly measurements = 600 citation data points per month accumulating continuously.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">07 · The Vertical Expansion Roadmap</div>
+
+<p>The order of vertical expansion matters. Each vertical should be entered when the previous vertical has produced sufficient IP to fund the next entry. The right sequence is: prove the model in promo products → extract the reusable framework components → apply them to pet supply → use both to establish horizontal ecommerce credibility.</p>
+
+<div class="roadmap-grid">
+  <div class="roadmap-col">
+    <div class="roadmap-phase">Phase 1 · Now → Q4 2026</div>
+    <div class="roadmap-title">Promo Products<br>Moat Building</div>
+    <ul class="roadmap-items">
+      <li>Complete drinkware experiment (May 24 Day 7)</li>
+      <li>Run bags + apparel baseline queries</li>
+      <li>Deliver 3 free audits to PPAI distributors</li>
+      <li>Build PSRESTful normalization library (50+ suppliers)</li>
+      <li>Iterate enrichment prompts through 6 evidence loop cycles</li>
+      <li>Apply to OpenAI merchant portal</li>
+      <li>First 3 paying customers (October)</li>
+      <li>Publish PPAI Media research article</li>
+      <li>Accumulate 500+ citation data points</li>
+    </ul>
+  </div>
+  <div class="roadmap-col">
+    <div class="roadmap-phase">Phase 2 · Q1-Q2 2027</div>
+    <div class="roadmap-title">Pet Supply<br>Vertical Entry</div>
+    <ul class="roadmap-items">
+      <li>Identify pet supply's equivalent of PromoStandards (NAPPA or distributor APIs)</li>
+      <li>Map vertical-unique fields (species, life stage, AAFCO)</li>
+      <li>Adapt enrichment prompt library for pet buyer intent</li>
+      <li>Run 20-query baseline for pet supply category</li>
+      <li>Identify 10 NAPPA Gold distributors as targets</li>
+      <li>Reuse scoring rubric — swap field weights for pet vertical</li>
+      <li>Build pet-specific FAQ pair library</li>
+      <li>First 3 pet supply paying customers</li>
+    </ul>
+  </div>
+  <div class="roadmap-col">
+    <div class="roadmap-phase">Phase 3 · Q3-Q4 2027</div>
+    <div class="roadmap-title">Horizontal Ecommerce<br>Platform Launch</div>
+    <ul class="roadmap-items">
+      <li>Abstract pipeline into configurable vertical modules</li>
+      <li>Build self-serve onboarding (CSV upload + field mapping UI)</li>
+      <li>Google Product Taxonomy auto-classification</li>
+      <li>Publish research: "AI Citation Rate by Field Type Across B2B Verticals"</li>
+      <li>Launch agency partner program</li>
+      <li>Build Shopify + WooCommerce native integrations</li>
+      <li>Target: 50 paying customers across 3 verticals</li>
+      <li>Series A fundraise with citation dataset as primary IP asset</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">08 · The Query Taxonomy — The Most Underbuilt Asset</div>
+
+<p>The single highest-leverage IP asset we are building — and the one that is most underdeveloped — is the query taxonomy. Every citation data point we collect is only as valuable as the query taxonomy it is organized around.</p>
+
+<p>We currently have 8 query types from the drinkware experiment: specification, occasion, comparison, budget, conversational, multi-objective, negative constraint, workflow. These 8 types were derived from intuition. They need to be derived from data.</p>
+
+<h3>What the Query Taxonomy Should Become</h3>
+
+<table class="field-table">
+  <thead>
+    <tr>
+      <th>Query Type</th>
+      <th>Example</th>
+      <th>Primary Field Driver</th>
+      <th>ACP Match Mechanism</th>
+      <th>Enrichment Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Specification</strong></td>
+      <td>"30oz BPA-free laser engrave bulk"</td>
+      <td>Decoration method, material, capacity</td>
+      <td>additionalProperty exact match</td>
+      <td>Layer 4 specs</td>
+    </tr>
+    <tr>
+      <td><strong>Quantity-threshold</strong></td>
+      <td>"tumblers for 200 employees MOQ under 50"</td>
+      <td>MOQ field</td>
+      <td>Offer.minimumOrderQuantity</td>
+      <td>Layer 5 B2B context</td>
+    </tr>
+    <tr>
+      <td><strong>Deadline-driven</strong></td>
+      <td>"branded drinkware ship in 7 days"</td>
+      <td>Production time, delivery time</td>
+      <td>deliveryLeadTime QuantitativeValue</td>
+      <td>Layer 3 fulfillment</td>
+    </tr>
+    <tr>
+      <td><strong>Occasion/intent</strong></td>
+      <td>"employee onboarding welcome kit drinkware"</td>
+      <td>Use-case tags, occasion tags</td>
+      <td>additionalProperty + description semantic</td>
+      <td>Layer 7 AI-native</td>
+    </tr>
+    <tr>
+      <td><strong>Budget-constrained</strong></td>
+      <td>"branded tumblers under $15 unit 100 qty"</td>
+      <td>Price breaks, price at quantity</td>
+      <td>Offer.priceSpecification</td>
+      <td>Layer 2 pricing</td>
+    </tr>
+    <tr>
+      <td><strong>Safety/trust</strong></td>
+      <td>"BPA-free food-safe tumbler corporate"</td>
+      <td>Material specs, certifications</td>
+      <td>additionalProperty + description</td>
+      <td>Layer 6 trust</td>
+    </tr>
+    <tr>
+      <td><strong>Comparison/competitive</strong></td>
+      <td>"best company for bulk branded tumblers"</td>
+      <td>Brand authority, review count, rating</td>
+      <td>aggregateRating + brand recognition</td>
+      <td>Layer 6 trust</td>
+    </tr>
+    <tr>
+      <td><strong>Negative constraint</strong></td>
+      <td>"drinkware that doesn't look cheap"</td>
+      <td>Quality language in description</td>
+      <td>Semantic description matching</td>
+      <td>Layer 7 AI-native description</td>
+    </tr>
+    <tr>
+      <td><strong>Multi-condition</strong></td>
+      <td>"eco laser engrave fast ship 50 units"</td>
+      <td>All fields simultaneously</td>
+      <td>Multi-field intersection</td>
+      <td>Complete enrichment required</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout green">
+  <strong>The IP Opportunity in Query Taxonomy</strong>
+  Nobody in the industry has published a validated query taxonomy showing which field types drive citation lift for which query types in B2B distribution. Building this across 20 customers and 3 verticals produces a dataset that can be published as an industry research report, used as the primary technical foundation for a Series A pitch, and forms the basis for a predictive citation rate model — one of the most defensible technical moats in the AI commerce category.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-bar">09 · Improving the Framework Over Time — The Operational Cadence</div>
+
+<p>The framework improves through structured iteration, not through occasional insight. Here is the operational cadence that makes it compound.</p>
+
+<div class="pipeline">
+  <div class="pipeline-step">
+    <div class="step-num">W</div>
+    <div class="step-body">
+      <div class="step-title">Weekly — Query Monitoring (20 minutes)</div>
+      <div class="step-desc">Run 10 priority queries across ChatGPT, Perplexity, Google AI Mode. Record result types. Note new companies appearing. Flag any enriched pages appearing. This is the raw data collection that funds all other improvement cycles. Cannot be skipped.</div>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num accent">2W</div>
+    <div class="step-body">
+      <div class="step-title">Bi-Weekly — Evidence Loop Cycle (2 hours)</div>
+      <div class="step-desc">Run full 20-query baseline. Compare to previous session. Identify field citation movements. Update enrichment prompts for fields that showed lift. Update scoring rubric weights. Add new query variants for types that performed unexpectedly. This is where the prompts improve.</div>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num green">M</div>
+    <div class="step-body">
+      <div class="step-title">Monthly — Normalization Library Update (3 hours)</div>
+      <div class="step-desc">Process any new suppliers encountered through customer catalog ingestion. Add new supplier quirk profiles. Update color name mapping tables. Validate that existing normalization rules still produce clean output (suppliers change their data formats). This is the infrastructure maintenance cycle.</div>
+    </div>
+  </div>
+  <div class="pipeline-step">
+    <div class="step-num blue">Q</div>
+    <div class="step-body">
+      <div class="step-title">Quarterly — Framework Publication + Vertical Assessment (1 day)</div>
+      <div class="step-desc">Compile findings from the quarter into a publishable insight. Share with PPAI Media or industry newsletter. Assess whether the pet supply or ecommerce vertical is ready for entry based on evidence accumulated. Update the scoring rubric with the quarter's empirical data. Review prompt library for structural improvements. This is the external IP deployment cycle.</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2>The One Thing That Makes All of This Defensible</h2>
+
+<p>Every step of the framework described above can be replicated by a well-funded competitor given enough time. The normalization library can be rebuilt. The prompts can be reimagined. The measurement methodology can be copied.</p>
+
+<p>The one thing that cannot be replicated is the <strong>longitudinal citation dataset</strong> — the accumulated record of which fields drove citation lift, for which query types, on which platforms, in which verticals, across which customers, over which time periods.</p>
+
+<p>This dataset does not exist anywhere. No academic institution has it. No competitor has it. No trade association has it. The only way to get it is to run the measurement. Every week you run the 20-query protocol is a week's worth of data that a competitor starting today cannot have.</p>
+
+<p>That is why the query monitoring cadence is the most important operational discipline in the entire framework. Not the prompt engineering. Not the normalization library. The weekly measurement. Because without the measurement, there is no dataset. Without the dataset, there is no defensible IP. Without the IP, the framework is just a methodology that anyone can copy.</p>
+
+<p><strong>Run the queries every week. Record every result. That is how the moat is built.</strong></p>
+
+<div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">
+  CatalogIQ · AI Commerce Enrichment Framework v1.0 · May 2026 · Internal Document
+</div>
+
+</body>
+</html>

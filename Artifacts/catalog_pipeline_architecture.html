@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CatalogIQ — Data Pipeline Architecture</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0d14;
+    --surface: #111520;
+    --surface2: #161b28;
+    --border: #1e2535;
+    --border2: #252d40;
+    --text: #e8eaf0;
+    --text2: #8892a4;
+    --text3: #545e72;
+    --accent: #4f9cf9;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 32px;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 1px;
+  }
+
+  .badge-acp { background: rgba(79,156,249,0.15); color: var(--accent); border: 1px solid rgba(79,156,249,0.3); }
+  .badge-ucp { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+  .badge-gmc { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+
+  /* PHASE TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.2s;
+    color: var(--text3);
+    border: none;
+    background: transparent;
+  }
+
+  .tab.active {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+
+  .tab:hover:not(.active) { color: var(--text2); }
+
+  .phase-content { display: none; }
+  .phase-content.active { display: block; }
+
+  /* PIPELINE ROW */
+  .pipeline {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+
+  .pipeline-stage {
+    flex: 1;
+    min-width: 160px;
+    position: relative;
+  }
+
+  .stage-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    height: 100%;
+    transition: border-color 0.2s;
+  }
+
+  .stage-card:hover { border-color: var(--border2); }
+
+  .stage-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .stage-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .stage-sub {
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 10px;
+  }
+
+  .stage-items {
+    list-style: none;
+  }
+
+  .stage-items li {
+    font-size: 11px;
+    color: var(--text3);
+    padding: 2px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .stage-items li::before {
+    content: '→';
+    color: var(--accent);
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .arrow-connector {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .arrow-connector svg { color: var(--text3); }
+
+  /* TOOL CHIP */
+  .tool-chip {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin: 2px 2px 2px 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2);
+    color: var(--text2);
+  }
+
+  .tool-chip.accent { background: rgba(79,156,249,0.1); border-color: rgba(79,156,249,0.25); color: var(--accent); }
+  .tool-chip.purple { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.25); color: #a78bfa; }
+  .tool-chip.green { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.25); color: var(--green); }
+  .tool-chip.orange { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25); color: var(--orange); }
+  .tool-chip.cyan { background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.25); color: var(--cyan); }
+
+  /* OUTPUT FORK */
+  .output-fork {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .fork-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .fork-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .fork-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .fork-title { font-size: 13px; font-weight: 600; }
+  .fork-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  .fork-detail {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.7;
+  }
+
+  .fork-detail strong { color: var(--text2); }
+
+  /* METRICS GRID */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .metric-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .metric-desc { font-size: 11px; color: var(--text3); }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* TIMELINE */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tl-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    position: relative;
+  }
+
+  .tl-week {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .tl-event { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .tl-desc { font-size: 10px; color: var(--text3); line-height: 1.5; }
+
+  .tl-dot {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--bg);
+  }
+
+  /* TOOL STACK TABLE */
+  .tool-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+
+  .tool-table th {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .tool-table td {
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text3);
+    vertical-align: top;
+    background: var(--surface);
+  }
+
+  .tool-table tr:hover td { background: var(--surface2); }
+
+  .tool-table td:first-child { color: var(--text2); font-weight: 500; }
+
+  /* ALERT BOX */
+  .alert {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .alert-info { background: rgba(79,156,249,0.08); border: 1px solid rgba(79,156,249,0.2); }
+  .alert-warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+  .alert-success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); }
+
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { font-size: 12px; line-height: 1.6; color: var(--text2); }
+  .alert-text strong { color: var(--text); }
+
+  /* CONTINUOUS MGMT */
+  .mgmt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .mgmt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .mgmt-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mgmt-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .mgmt-title { font-size: 12px; font-weight: 600; }
+  .mgmt-freq { font-size: 10px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; }
+
+  .mgmt-list { list-style: none; }
+  .mgmt-list li {
+    font-size: 11px;
+    color: var(--text3);
+    padding: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .mgmt-list li::before { content: '▸'; color: var(--accent); font-size: 9px; flex-shrink: 0; margin-top: 2px; }
+
+  /* COST TABLE */
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .cost-row:last-child { border-bottom: none; }
+  .cost-name { color: var(--text2); }
+  .cost-detail { font-size: 10px; color: var(--text3); font-family: 'IBM Plex Mono', monospace; }
+  .cost-price { font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+
+  /* RESPONSIVE PIPELINE */
+  @media (max-width: 900px) {
+    .pipeline { flex-direction: column; }
+    .arrow-connector { transform: rotate(90deg); padding: 4px 0; justify-content: center; }
+    .output-fork { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .timeline { grid-template-columns: 1fr 1fr; }
+    .mgmt-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div>
+    <div class="logo">CatalogIQ</div>
+    <div class="page-title">Data Pipeline Architecture</div>
+    <div class="page-sub">End-to-end enrichment → ACP + UCP + GMC for B2B distributors</div>
+    <div class="badge-row">
+      <span class="badge badge-acp">ACP / OpenAI</span>
+      <span class="badge badge-ucp">UCP / Google</span>
+      <span class="badge badge-gmc">GMC / Shopping</span>
+    </div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px">ARCH v1.0</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:4px">May 2026</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="showPhase('audit')">Phase 1 — Audit</button>
+  <button class="tab" onclick="showPhase('enrichment')">Phase 2 — Enrichment</button>
+  <button class="tab" onclick="showPhase('continuous')">Phase 3 — Continuous</button>
+  <button class="tab" onclick="showPhase('tools')">Tool Stack</button>
+  <button class="tab" onclick="showPhase('roi')">ROI & Timeline</button>
+</div>
+
+<!-- ═══════════════════════════════════════ PHASE 1: AUDIT ═══ -->
+<div id="phase-audit" class="phase-content active">
+
+  <div class="section-label">Phase 1 — Catalog Readiness Audit</div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">💡</span>
+    <div class="alert-text"><strong>What this phase produces:</strong> A scored report showing exactly which SKUs are invisible to AI surfaces, why they're invisible, and what it costs the distributor in missed revenue. This is your sales tool, your delivery artifact, and your enrichment roadmap simultaneously.</div>
+  </div>
+
+  <!-- AUDIT PIPELINE -->
+  <div class="pipeline">
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 01</div>
+        <div class="stage-title">Data Ingestion</div>
+        <div class="stage-sub">Accept catalog in any format</div>
+        <ul class="stage-items">
+          <li>CSV / Excel upload</li>
+          <li>SAGE catalog export</li>
+          <li>ESP / ASI export</li>
+          <li>PromoStandards pull</li>
+          <li>API from commonsku</li>
+          <li>Shopify product export</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Python</span>
+          <span class="tool-chip">pandas</span>
+          <span class="tool-chip orange">PSRESTful</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 02</div>
+        <div class="stage-title">Schema Normalization</div>
+        <div class="stage-sub">Map to canonical fields</div>
+        <ul class="stage-items">
+          <li>Standardize field names</li>
+          <li>Detect duplicates</li>
+          <li>Validate data types</li>
+          <li>Resolve variant groups</li>
+          <li>Flag encoding issues</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Python</span>
+          <span class="tool-chip">pydantic</span>
+          <span class="tool-chip">fuzzy match</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 03</div>
+        <div class="stage-title">ACP/UCP Scoring</div>
+        <div class="stage-sub">Score vs. both specs</div>
+        <ul class="stage-items">
+          <li>Required field check</li>
+          <li>Recommended field check</li>
+          <li>B2B attribute depth</li>
+          <li>Variant structure audit</li>
+          <li>Description quality score</li>
+          <li>Image validation</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Python</span>
+          <span class="tool-chip green">ACP spec</span>
+          <span class="tool-chip purple">UCP spec</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 04</div>
+        <div class="stage-title">Semantic Analysis</div>
+        <div class="stage-sub">LLM description quality</div>
+        <ul class="stage-items">
+          <li>Embedding similarity score</li>
+          <li>Spec density count</li>
+          <li>B2B signal presence</li>
+          <li>Buyer intent match</li>
+          <li>Variant confusion risk</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Claude API</span>
+          <span class="tool-chip">embeddings</span>
+          <span class="tool-chip cyan">cosine sim</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 05</div>
+        <div class="stage-title">Revenue Weighting</div>
+        <div class="stage-sub">Prioritize by impact</div>
+        <ul class="stage-items">
+          <li>Join to order history</li>
+          <li>Revenue per SKU (90d)</li>
+          <li>High-rev + low-score = P0</li>
+          <li>Rank enrichment queue</li>
+          <li>Category aggregation</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip">SQL</span>
+          <span class="tool-chip">Snowflake</span>
+          <span class="tool-chip orange">BigQuery</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 06</div>
+        <div class="stage-title">Audit Report</div>
+        <div class="stage-sub">Deliverable to customer</div>
+        <ul class="stage-items">
+          <li>Overall AI readiness score</li>
+          <li>Invisible SKU count</li>
+          <li>Revenue at risk ($)</li>
+          <li>Top 5 fix priorities</li>
+          <li>Before/after examples</li>
+          <li>Competitor comparison</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip green">PDF report</span>
+          <span class="tool-chip accent">Web dashboard</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AUDIT METRICS -->
+  <div class="section-label">Audit Output Metrics</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">ACP Completeness</div>
+      <div class="metric-value" style="color:var(--accent)">0–100</div>
+      <div class="metric-desc">% of required + recommended fields populated per SKU</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Semantic Density</div>
+      <div class="metric-value" style="color:var(--cyan)">1–10</div>
+      <div class="metric-desc">Specification richness score — how matchable is each description</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Revenue at Risk</div>
+      <div class="metric-value" style="color:var(--orange)">$</div>
+      <div class="metric-desc">Annual revenue from SKUs with zero AI visibility potential</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Variant Risk Score</div>
+      <div class="metric-value" style="color:var(--red)">0–5</div>
+      <div class="metric-desc">Likelihood of variant confusion causing price misattribution</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ PHASE 2: ENRICHMENT ═══ -->
+<div id="phase-enrichment" class="phase-content">
+
+  <div class="section-label">Phase 2 — One-Time Enrichment</div>
+
+  <div class="alert alert-warn">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-text"><strong>One-time enrichment is the entry point, not the product.</strong> It gets the distributor from invisible to indexed. Continuous management (Phase 3) is what keeps them competitive and generates your recurring revenue. Never position enrichment as a standalone deliverable without the monitoring subscription.</div>
+  </div>
+
+  <!-- ENRICHMENT PIPELINE -->
+  <div class="pipeline">
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 01</div>
+        <div class="stage-title">Source Ingestion</div>
+        <div class="stage-sub">Pull live supplier data</div>
+        <ul class="stage-items">
+          <li>PSRESTful API call</li>
+          <li>PromoStandards PDS</li>
+          <li>Pricing & Config (PCS)</li>
+          <li>Media Content (MCS)</li>
+          <li>Inventory levels</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip orange">PSRESTful</span>
+          <span class="tool-chip">PromoStandards</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 02</div>
+        <div class="stage-title">Agent 1 — Extract</div>
+        <div class="stage-sub">Fill missing attributes</div>
+        <ul class="stage-items">
+          <li>Visual attribute extraction</li>
+          <li>Spec inference from images</li>
+          <li>Compatibility detection</li>
+          <li>Category classification</li>
+          <li>Variant grouping</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Claude claude-sonnet-4-20250514</span>
+          <span class="tool-chip">Vision API</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 03</div>
+        <div class="stage-title">Agent 2 — Validate</div>
+        <div class="stage-sub">Quality gate before write</div>
+        <ul class="stage-items">
+          <li>Cross-check vs. source</li>
+          <li>Flag hallucinations</li>
+          <li>Verify compatibility claims</li>
+          <li>Confirm price accuracy</li>
+          <li>Route to human queue</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Claude claude-haiku-4-5-20251001</span>
+          <span class="tool-chip orange">Rules engine</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 04</div>
+        <div class="stage-title">Description Generation</div>
+        <div class="stage-sub">B2B procurement intent</div>
+        <ul class="stage-items">
+          <li>Spec-dense rewrite</li>
+          <li>Use-case context</li>
+          <li>Buyer intent language</li>
+          <li>FAQ pair generation</li>
+          <li>GMC conversational attrs</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip accent">Claude claude-sonnet-4-20250514</span>
+          <span class="tool-chip cyan">Prompt library</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 05</div>
+        <div class="stage-title">Master Record</div>
+        <div class="stage-sub">Single enriched source</div>
+        <ul class="stage-items">
+          <li>All enriched fields</li>
+          <li>Clean variant groups</li>
+          <li>Schema.org markup</li>
+          <li>FAQ pairs</li>
+          <li>Audit trail</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip">Postgres</span>
+          <span class="tool-chip orange">Supabase</span>
+          <span class="tool-chip">JSON-LD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-connector">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+
+    <div class="pipeline-stage">
+      <div class="stage-card">
+        <div class="stage-num">STEP 06</div>
+        <div class="stage-title">Output Fork</div>
+        <div class="stage-sub">3 channel outputs</div>
+        <ul class="stage-items">
+          <li>ACP JSONL feed</li>
+          <li>UCP manifest JSON</li>
+          <li>GMC CSV/XML feed</li>
+          <li>Schema.org on PDP</li>
+          <li>Validation report</li>
+        </ul>
+        <div style="margin-top:10px">
+          <span class="tool-chip green">ACP</span>
+          <span class="tool-chip purple">UCP</span>
+          <span class="tool-chip accent">GMC</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OUTPUT FORK DETAIL -->
+  <div class="section-label">Output Fork — Three Simultaneous Destinations</div>
+
+  <div class="output-fork">
+
+    <div class="fork-card">
+      <div class="fork-header">
+        <div class="fork-icon" style="background:rgba(79,156,249,0.15)">🤖</div>
+        <div>
+          <div class="fork-title" style="color:var(--accent)">ACP Feed → ChatGPT</div>
+          <div class="fork-sub">OpenAI Agentic Commerce Protocol</div>
+        </div>
+      </div>
+      <div class="fork-detail">
+        <strong>Format:</strong> JSONL (gzip compressed)<br>
+        <strong>Delivery:</strong> HTTPS push to OpenAI endpoint<br>
+        <strong>Cadence:</strong> Full feed daily + incremental via API<br>
+        <strong>Freshness:</strong> Up to 15-min updates for price/inventory<br>
+        <strong>Required fields:</strong> id, title, description, price, availability, image_link, brand, google_product_category<br>
+        <strong>B2B extras:</strong> min_quantity, decoration_method, production_time, use_case_tags, group_id<br>
+        <strong>Indexing time:</strong> 1–7 days after first submission<br>
+        <strong>Validation:</strong> OpenAI spec v2026-01-30
+      </div>
+    </div>
+
+    <div class="fork-card">
+      <div class="fork-header">
+        <div class="fork-icon" style="background:rgba(124,58,237,0.15)">🔍</div>
+        <div>
+          <div class="fork-title" style="color:#a78bfa">UCP Manifest → Google</div>
+          <div class="fork-sub">Universal Commerce Protocol</div>
+        </div>
+      </div>
+      <div class="fork-detail">
+        <strong>Format:</strong> JSON manifest file<br>
+        <strong>Delivery:</strong> Published at /.well-known/ucp on distributor domain<br>
+        <strong>Cadence:</strong> Google crawls on its schedule (daily+)<br>
+        <strong>Freshness:</strong> Manifest updated on price/inventory events<br>
+        <strong>Required fields:</strong> Same base as GMC + checkout endpoints<br>
+        <strong>Powers:</strong> Google AI Mode + Gemini shopping + Google Search AI Overviews<br>
+        <strong>Foundation:</strong> Built on existing GMC feed data<br>
+        <strong>Indexing time:</strong> 3–14 days after manifest published
+      </div>
+    </div>
+
+    <div class="fork-card">
+      <div class="fork-header">
+        <div class="fork-icon" style="background:rgba(34,197,94,0.15)">🛒</div>
+        <div>
+          <div class="fork-title" style="color:var(--green)">GMC Feed → Google Shopping</div>
+          <div class="fork-sub">Google Merchant Center</div>
+        </div>
+      </div>
+      <div class="fork-detail">
+        <strong>Format:</strong> CSV, XML, or Content API<br>
+        <strong>Delivery:</strong> Push to Merchant Center account<br>
+        <strong>Cadence:</strong> Full feed daily — supplemental feeds for price/inventory<br>
+        <strong>Freshness:</strong> Price + availability via supplemental feed (hourly)<br>
+        <strong>Required fields:</strong> id, title, description, link, image_link, price, availability, brand, GTIN, google_product_category<br>
+        <strong>B2B extras:</strong> unit_pricing_measure, multipack, min_handling_time, custom_labels 0–4<br>
+        <strong>Powers:</strong> Shopping ads + free listings + UCP foundation<br>
+        <strong>Indexing time:</strong> 24–72 hours
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ PHASE 3: CONTINUOUS ═══ -->
+<div id="phase-continuous" class="phase-content">
+
+  <div class="section-label">Phase 3 — Continuous Management</div>
+
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <div class="alert-text"><strong>This is your subscription revenue.</strong> One-time enrichment is a project. Continuous management is a platform. The distributor cannot turn this off without losing their AI visibility — that's the stickiness that justifies $1,500–3,000/month recurring.</div>
+  </div>
+
+  <div class="mgmt-grid">
+
+    <div class="mgmt-card">
+      <div class="mgmt-header">
+        <div class="mgmt-icon" style="background:rgba(245,158,11,0.15)">⚡</div>
+        <div>
+          <div class="mgmt-title">Real-Time Triggers</div>
+          <div class="mgmt-freq">EVENT-DRIVEN — minutes</div>
+        </div>
+      </div>
+      <ul class="mgmt-list">
+        <li>Price change detected → push incremental ACP update immediately</li>
+        <li>Inventory goes to zero → update availability flag in all three feeds</li>
+        <li>New SKU onboarded → trigger enrichment pipeline automatically</li>
+        <li>SKU discontinued → remove from feeds + flag to customer</li>
+        <li>PromoStandards inventory webhook → real-time sync for in-stock status</li>
+        <li>ACP feed rejection alert → auto-diagnose reason and attempt fix</li>
+      </ul>
+    </div>
+
+    <div class="mgmt-card">
+      <div class="mgmt-header">
+        <div class="mgmt-icon" style="background:rgba(79,156,249,0.15)">📅</div>
+        <div>
+          <div class="mgmt-title">Daily Jobs</div>
+          <div class="mgmt-freq">SCHEDULED — nightly</div>
+        </div>
+      </div>
+      <ul class="mgmt-list">
+        <li>Full ACP feed regeneration and push (replaces previous full file)</li>
+        <li>GMC full feed refresh and supplemental price/inventory overlay</li>
+        <li>UCP manifest regeneration with latest pricing</li>
+        <li>Feed validation report — flagging any new disapprovals or warnings</li>
+        <li>Price accuracy check — feed price vs. live website scrape comparison</li>
+        <li>New PromoStandards product data pull — detect supplier catalog updates</li>
+      </ul>
+    </div>
+
+    <div class="mgmt-card">
+      <div class="mgmt-header">
+        <div class="mgmt-icon" style="background:rgba(34,197,94,0.15)">📊</div>
+        <div>
+          <div class="mgmt-title">Weekly Jobs</div>
+          <div class="mgmt-freq">SCHEDULED — Sunday nights</div>
+        </div>
+      </div>
+      <ul class="mgmt-list">
+        <li>Citation monitoring — run 50 buyer-intent queries across ChatGPT + Gemini</li>
+        <li>Share of voice report — which SKUs appear, at what position, vs. competitors</li>
+        <li>Zero-result query detection — buyer queries returning no distributor results</li>
+        <li>Enrichment gap report — which SKUs are still uncited and why</li>
+        <li>GMC performance pull — impressions, clicks, CTR by SKU from Merchant Center</li>
+        <li>New SKU enrichment batch — any SKUs added that week processed automatically</li>
+      </ul>
+    </div>
+
+    <div class="mgmt-card">
+      <div class="mgmt-header">
+        <div class="mgmt-icon" style="background:rgba(124,58,237,0.15)">📈</div>
+        <div>
+          <div class="mgmt-title">Monthly Jobs</div>
+          <div class="mgmt-freq">SCHEDULED — 1st of month</div>
+        </div>
+      </div>
+      <ul class="mgmt-list">
+        <li>Full re-enrichment of bottom 20% scoring SKUs — refresh descriptions</li>
+        <li>AI-referral revenue attribution report — sessions, conversions, revenue by source</li>
+        <li>Competitor visibility benchmark — how client citation rate compares to competitors</li>
+        <li>ACP spec version check — OpenAI updates spec quarterly, ensure compliance</li>
+        <li>PromoStandards catalog delta — new suppliers onboarded, new endpoints available</li>
+        <li>ROI report delivery — the document that justifies renewal</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- MONITORING DASHBOARD PREVIEW -->
+  <div class="section-label">Monitoring Dashboard — What Your Customer Sees</div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:24px">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:6px">AI VISIBILITY SCORE</div>
+        <div style="font-size:28px;font-weight:700;color:var(--green);font-family:'IBM Plex Mono',monospace">73<span style="font-size:14px;color:var(--text3)">/100</span></div>
+        <div style="font-size:10px;color:var(--green)">↑ +41 since enrichment</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:6px">CHATGPT CITATIONS</div>
+        <div style="font-size:28px;font-weight:700;color:var(--accent);font-family:'IBM Plex Mono',monospace">847</div>
+        <div style="font-size:10px;color:var(--text3)">this month</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:6px">AI REFERRAL REVENUE</div>
+        <div style="font-size:28px;font-weight:700;color:var(--orange);font-family:'IBM Plex Mono',monospace">$12.4K</div>
+        <div style="font-size:10px;color:var(--text3)">this month</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);margin-bottom:6px">SKUs IN ACP FEED</div>
+        <div style="font-size:28px;font-weight:700;color:var(--cyan);font-family:'IBM Plex Mono',monospace">24,891</div>
+        <div style="font-size:10px;color:var(--green)">98.4% approved</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;text-align:center">↑ Live dashboard — updated daily. Customer logs in to see this. Drives renewal conversations automatically.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ TOOLS ═══ -->
+<div id="phase-tools" class="phase-content">
+
+  <div class="section-label">Complete Tool Stack — Cost-Optimized for Pre-Revenue Startup</div>
+
+  <table class="tool-table">
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Function</th>
+        <th>Tool Choice</th>
+        <th>Why This Tool</th>
+        <th>Monthly Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Data Ingestion</td>
+        <td>Promo supplier data</td>
+        <td><span class="tool-chip orange">PSRESTful API</span></td>
+        <td>REST wrapper for 557 PromoStandards suppliers — one integration unlocks all</td>
+        <td>~$50–200</td>
+      </tr>
+      <tr>
+        <td>Data Ingestion</td>
+        <td>CSV / file upload</td>
+        <td><span class="tool-chip">Python + pandas</span></td>
+        <td>Free, handles any format. Covers non-PromoStandards suppliers.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Data Storage</td>
+        <td>Master product records</td>
+        <td><span class="tool-chip orange">Supabase (Postgres)</span></td>
+        <td>Free tier sufficient at early stage. Full SQL. Scales to millions of SKUs.</td>
+        <td>$0–25</td>
+      </tr>
+      <tr>
+        <td>Data Storage</td>
+        <td>Vector embeddings</td>
+        <td><span class="tool-chip purple">pgvector (in Supabase)</span></td>
+        <td>Embeddings stored alongside product data. No separate vector DB needed early.</td>
+        <td>Included</td>
+      </tr>
+      <tr>
+        <td>Enrichment — Extract</td>
+        <td>Attribute extraction + vision</td>
+        <td><span class="tool-chip accent">Claude claude-sonnet-4-20250514</span></td>
+        <td>Best-in-class for B2B attribute extraction. Vision capability for product images.</td>
+        <td>~$30–100</td>
+      </tr>
+      <tr>
+        <td>Enrichment — Validate</td>
+        <td>Quality gate / second agent</td>
+        <td><span class="tool-chip accent">Claude claude-haiku-4-5-20251001</span></td>
+        <td>10x cheaper than Sonnet. Fast enough for validation checks. Keeps costs down.</td>
+        <td>~$5–20</td>
+      </tr>
+      <tr>
+        <td>Enrichment — Write</td>
+        <td>B2B description generation</td>
+        <td><span class="tool-chip accent">Claude claude-sonnet-4-20250514</span></td>
+        <td>Procurement-intent prompt library. Best instruction-following for structured output.</td>
+        <td>Included above</td>
+      </tr>
+      <tr>
+        <td>Orchestration</td>
+        <td>Pipeline scheduling</td>
+        <td><span class="tool-chip green">n8n (self-hosted)</span></td>
+        <td>Free, visual workflow builder. Handles triggers, scheduling, webhooks. No-code for early builds.</td>
+        <td>$0 (self-host)</td>
+      </tr>
+      <tr>
+        <td>Orchestration</td>
+        <td>Event-driven triggers</td>
+        <td><span class="tool-chip green">n8n webhooks</span> or <span class="tool-chip">Inngest</span></td>
+        <td>Price-change events trigger feed updates. Inngest for more complex event graphs later.</td>
+        <td>$0–25</td>
+      </tr>
+      <tr>
+        <td>Feed Generation</td>
+        <td>ACP JSONL output</td>
+        <td><span class="tool-chip accent">Python template engine</span></td>
+        <td>Custom formatter from master record to ACP spec. One file per customer, versioned.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Feed Generation</td>
+        <td>GMC XML / CSV output</td>
+        <td><span class="tool-chip green">Python + Feedgen lib</span></td>
+        <td>Open-source feed generation library. Handles GMC spec formatting.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Feed Generation</td>
+        <td>UCP manifest JSON</td>
+        <td><span class="tool-chip purple">Python + custom</span></td>
+        <td>JSON file published to distributor domain. Simple generation, significant impact.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Feed Delivery</td>
+        <td>ACP push to OpenAI</td>
+        <td><span class="tool-chip accent">OpenAI Commerce API</span></td>
+        <td>Direct HTTPS push. File upload (daily) + incremental API (intraday).</td>
+        <td>$0 (no feed fee)</td>
+      </tr>
+      <tr>
+        <td>Feed Delivery</td>
+        <td>GMC push</td>
+        <td><span class="tool-chip green">Google Content API</span></td>
+        <td>Google's official API for programmatic GMC feed management.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Monitoring</td>
+        <td>Citation tracking</td>
+        <td><span class="tool-chip accent">Claude API + Python</span></td>
+        <td>Automated query runs. Claude processes ChatGPT responses for citation extraction.</td>
+        <td>~$10–30</td>
+      </tr>
+      <tr>
+        <td>Monitoring</td>
+        <td>GMC performance data</td>
+        <td><span class="tool-chip green">Google Merchant Center API</span></td>
+        <td>Pull impressions, clicks, disapprovals programmatically per SKU.</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td>Customer Dashboard</td>
+        <td>Web app</td>
+        <td><span class="tool-chip">Next.js + Vercel</span></td>
+        <td>Free hosting tier. React frontend. Supabase as backend. Ship in one weekend.</td>
+        <td>$0–20</td>
+      </tr>
+      <tr>
+        <td>Infrastructure</td>
+        <td>Hosting + compute</td>
+        <td><span class="tool-chip">Railway</span> or <span class="tool-chip">Fly.io</span></td>
+        <td>Cheap container hosting for Python pipeline jobs. $5–10/month to start.</td>
+        <td>$5–20</td>
+      </tr>
+      <tr>
+        <td>Reporting</td>
+        <td>Monthly ROI reports</td>
+        <td><span class="tool-chip orange">Claude API + PDF gen</span></td>
+        <td>Automated report generation from dashboard data. Customer receives PDF monthly.</td>
+        <td>~$5</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Total Monthly Infrastructure Cost</div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:24px">
+    <div class="cost-row">
+      <div><div class="cost-name">PSRESTful API</div><div class="cost-detail">PromoStandards data for all 557 suppliers</div></div>
+      <div class="cost-price" style="color:var(--orange)">$50–200</div>
+    </div>
+    <div class="cost-row">
+      <div><div class="cost-name">Claude API (Sonnet + Haiku)</div><div class="cost-detail">Enrichment + validation + monitoring for 5 customers, ~50K SKUs</div></div>
+      <div class="cost-price" style="color:var(--accent)">$35–120</div>
+    </div>
+    <div class="cost-row">
+      <div><div class="cost-name">Supabase (database + vectors)</div><div class="cost-detail">Free tier handles first 50K SKUs comfortably</div></div>
+      <div class="cost-price" style="color:var(--green)">$0–25</div>
+    </div>
+    <div class="cost-row">
+      <div><div class="cost-name">n8n + Railway (orchestration + hosting)</div><div class="cost-detail">Self-hosted n8n on Railway container</div></div>
+      <div class="cost-price" style="color:var(--text2)">$10–20</div>
+    </div>
+    <div class="cost-row">
+      <div><div class="cost-name">Vercel (customer dashboard)</div><div class="cost-detail">Free tier covers first 10 customers easily</div></div>
+      <div class="cost-price" style="color:var(--green)">$0–20</div>
+    </div>
+    <div class="cost-row" style="background:var(--surface2)">
+      <div><div class="cost-name" style="color:var(--text);font-weight:700">Total at 5 customers</div><div class="cost-detail">Monthly infrastructure cost</div></div>
+      <div class="cost-price" style="color:var(--green);font-size:16px">$95–385</div>
+    </div>
+    <div class="cost-row" style="background:var(--surface2)">
+      <div><div class="cost-name" style="color:var(--text);font-weight:700">Revenue at 5 customers × $1,500/mo</div><div class="cost-detail">Gross margin at this stage</div></div>
+      <div class="cost-price" style="color:var(--green);font-size:16px">$7,500 → 95%+ GM</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ ROI ═══ -->
+<div id="phase-roi" class="phase-content">
+
+  <div class="section-label">ROI Timeline — What to Promise, What to Measure</div>
+
+  <div class="timeline">
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--accent)"></div>
+      <div class="tl-week">DAYS 1–7</div>
+      <div class="tl-event">Feed Live</div>
+      <div class="tl-desc">ACP feed submitted and validated. GMC feed active. UCP manifest published. All three channels ingesting enriched data.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--cyan)"></div>
+      <div class="tl-week">WEEKS 4–8</div>
+      <div class="tl-event">First Citations</div>
+      <div class="tl-desc">SKUs begin appearing in ChatGPT and Gemini responses for buyer-intent queries. Share of voice report shows first measurable presence.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--green)"></div>
+      <div class="tl-week">WEEKS 6–10</div>
+      <div class="tl-event">AI Traffic Visible</div>
+      <div class="tl-desc">UTM-tagged sessions from ChatGPT and Gemini appear in analytics. New customer acquisition channel established and measurable.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--orange)"></div>
+      <div class="tl-week">WEEKS 12–20</div>
+      <div class="tl-event">Revenue Attribution</div>
+      <div class="tl-desc">First orders attributable to AI-channel discovery close. ROI becomes demonstrable. Renewal conversation begins from position of strength.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--pink)"></div>
+      <div class="tl-week">MONTHS 6–12</div>
+      <div class="tl-event">Sustained ROI</div>
+      <div class="tl-desc">AI channel producing consistent new customer acquisition. Monthly ROI report shows clear positive return. Upsell to additional categories or SKU volume.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-dot" style="background:var(--accent2)"></div>
+      <div class="tl-week">MONTHS 18–24</div>
+      <div class="tl-event">Full Attribution</div>
+      <div class="tl-desc">High-confidence attribution data accumulated. Full ROI picture clear. Competitive advantage vs. distributors who started later is measurable and growing.</div>
+    </div>
+  </div>
+
+  <!-- ROI MATH -->
+  <div class="section-label">The ROI Math That Closes Sales</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px">Conservative Case — $5M Distributor</div>
+      <div class="cost-row" style="border-color:var(--border)">
+        <div class="cost-name">Annual revenue</div>
+        <div class="cost-price" style="color:var(--text2)">$5,000,000</div>
+      </div>
+      <div class="cost-row" style="border-color:var(--border)">
+        <div class="cost-name">AI channel target (1%)</div>
+        <div class="cost-price" style="color:var(--text2)">$50,000/yr</div>
+      </div>
+      <div class="cost-row" style="border-color:var(--border)">
+        <div class="cost-name">Platform cost</div>
+        <div class="cost-price" style="color:var(--orange)">$18,000/yr</div>
+      </div>
+      <div class="cost-row" style="border-color:var(--border);background:var(--surface2)">
+        <div class="cost-name" style="color:var(--green);font-weight:700">Net ROI</div>
+        <div class="cost-price" style="color:var(--green);font-size:16px">$32,000/yr</div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:10px">Break-even: 0.36% of revenue from AI channel. That's $1,500/month in new orders from buyers who found them on ChatGPT or Gemini.</div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px">What You Measure Monthly</div>
+      <ul class="mgmt-list">
+        <li>SKU citation rate: % of 50 monitored queries that surface a client SKU</li>
+        <li>Share of voice vs. competitors on same queries</li>
+        <li>AI-referral sessions in analytics (UTM tracked)</li>
+        <li>AI-referral quote request rate</li>
+        <li>AI-attributed closed orders and revenue</li>
+        <li>GMC active SKU rate and disapproval trend</li>
+        <li>Feed price accuracy — feed vs. live website spot check</li>
+        <li>New SKUs enriched and onboarded to feeds</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span class="alert-icon">📌</span>
+    <div class="alert-text"><strong>The key framing for customer conversations:</strong> "You currently get 0% of your revenue from AI channels. Your break-even on our platform is 0.36% — roughly $1,500/month in new AI-sourced orders. Given that ChatGPT processes 50 million shopping queries per day and your catalog will appear in responses to relevant B2B queries for the first time, is 0.36% an unreasonable target?" The answer is always no.</div>
+  </div>
+
+</div>
+
+<script>
+function showPhase(phase) {
+  document.querySelectorAll('.phase-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('phase-' + phase).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

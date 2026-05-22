@@ -1,0 +1,81 @@
+S.No.,Model,Result Type,Quality Score,Enrichment Fields,Field Count
+1,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+1,Perplexity,4,C,"Price, MOQ, Decoration method, Production time, Size/capacity spec",5
+1,Gemini,3,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+1,Google AI mode,2,C,"MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+2,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+2,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+2,Gemini,3,C,"Price, MOQ, Production time, Use case context, Size/capacity spec",5
+2,Google AI mode,2,C,"MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+3,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+3,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Size/capacity spec",5
+3,Gemini,3,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+3,Google AI mode,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+4,Chatgpt,4,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+4,Perplexity,2,C,"Price, MOQ, Decoration method, Size/capacity spec",4
+4,Gemini,3,C,"Price, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+4,Google AI mode,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+5,Chatgpt,2,C,"MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+5,Perplexity,4,C,"Price, MOQ, Decoration method, Production time, Size/capacity spec",5
+5,Gemini,3,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+5,Google AI mode,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+6,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+6,Perplexity,2,C,"MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+6,Gemini,3,C,"Price, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+6,Google AI mode,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+7,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+7,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+7,Gemini,3,C,"Price, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+7,Google AI mode,4,C,"Price, MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",6
+8,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+8,Perplexity,2,C,"MOQ, Decoration method, Production time, Use case context, Size/capacity spec",5
+8,Gemini,3,C,"Decoration method, Production time, Use case context, Size/capacity spec",4
+8,Google AI mode,2,C,"MOQ, Decoration method, Production time, Use case context, Size/capacity spec",5
+9,Chatgpt,4,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+9,Perplexity,4,C,"Price, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+9,Gemini,3,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+9,Google AI mode,3,C,"MOQ, Decoration method, Use case context, Size/capacity spec",4
+10,Chatgpt,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+10,Perplexity,2,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+10,Gemini,3,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+10,Google AI mode,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+11,Chatgpt,4,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+11,Perplexity,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+11,Gemini,3,C,"Price, MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",6
+11,Google AI mode,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+12,Chatgpt,4,C,"Price, Decoration method, Production time, Use case context, Size/capacity spec",5
+12,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+12,Gemini,3,C,"Price, MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",6
+12,Google AI mode,4,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+13,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+13,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+13,Gemini,3,C,"Price, Production time, Use case context, Size/capacity spec",4
+13,Google AI mode,4,C,"Price, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+14,Chatgpt,4,C,"Price, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+14,Perplexity,2,C,"Price, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+14,Gemini,3,C,"Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",5
+14,Google AI mode,2,C,"MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+15,Chatgpt,4,C,"Price, MOQ, Decoration method, Use case context, Size/capacity spec",5
+15,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+15,Gemini,3,C,"Price, Decoration method, Production time, Use case context, Size/capacity spec",5
+15,Google AI mode,4,C,"Price, MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",6
+16,Chatgpt,2,C,"MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+16,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Sustainability signal, Size/capacity spec",6
+16,Gemini,3,C,"MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+16,Google AI mode,2,C,"Price, Decoration method, Production time, Sustainability signal",4
+17,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+17,Perplexity,2,B,"Decoration method, Use case context, Size/capacity spec",3
+17,Gemini,3,B,"Decoration method, Use case context, Size/capacity spec",3
+17,Google AI mode,2,C,"MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+18,Chatgpt,2,B,"Decoration method, Use case context",2
+18,Perplexity,2,C,"Price, MOQ, Decoration method, Use case context, Sustainability signal",5
+18,Gemini,3,C,"Decoration method, Production time, Use case context, Size/capacity spec",4
+18,Google AI mode,2,C,"MOQ, Decoration method, Use case context, Sustainability signal, Size/capacity spec",5
+19,Chatgpt,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+19,Perplexity,2,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+19,Gemini,3,C,"Price, MOQ, Decoration method, Production time, Use case context, Size/capacity spec",6
+19,Google AI mode,4,C,"Price, MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",7
+20,Chatgpt,4,C,"Price, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+20,Perplexity,2,C,"MOQ, Decoration method, Production time, Use case context, Sustainability signal, Size/capacity spec",6
+20,Gemini,3,B,"Production time, Use case context, Size/capacity spec",3
+20,Google AI mode,4,C,"Price, Decoration method, Production time, Use case context, Size/capacity spec",5

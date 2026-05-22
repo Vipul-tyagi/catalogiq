@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The End of Blue Links: How AI Is Rewriting the Rules of Search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1614;
+  --paper: #faf6f0;
+  --cream: #f0ebe2;
+  --warm: #e8e0d4;
+  --accent: #c8420e;
+  --accent2: #1a5a3a;
+  --muted: #7a6e64;
+  --border: #d4cabc;
+  --chart-1: #c8420e;
+  --chart-2: #1a5a3a;
+  --chart-3: #2a5ab8;
+  --chart-4: #9a7a00;
+  --chart-5: #6b21a8;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.75;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* HEADER */
+.masthead {
+  padding: 48px 0 32px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 48px;
+}
+
+.publication-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.article-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 54px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.deck {
+  font-size: 20px;
+  color: var(--muted);
+  line-height: 1.6;
+  font-weight: 300;
+  font-style: italic;
+  margin-bottom: 24px;
+  border-left: 3px solid var(--border);
+  padding-left: 20px;
+}
+
+.byline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.byline span { color: var(--ink); font-weight: 500; }
+
+/* BODY */
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 56px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 36px 0 12px;
+  color: var(--ink);
+}
+
+p { margin-bottom: 22px; }
+
+strong { font-weight: 600; }
+
+em { font-style: italic; color: var(--muted); }
+
+a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* PULL QUOTE */
+.pullquote {
+  margin: 40px -24px;
+  padding: 32px 48px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.4;
+  position: relative;
+}
+
+.pullquote::before {
+  content: '\201C';
+  font-size: 80px;
+  line-height: 1;
+  position: absolute;
+  top: 16px;
+  left: 24px;
+  opacity: 0.2;
+  font-family: 'Playfair Display', serif;
+}
+
+.pullquote .attribution {
+  display: block;
+  font-size: 12px;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 12px;
+  opacity: 0.6;
+}
+
+/* STAT CALLOUT */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 40px 0;
+}
+
+.stat-box {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.stat-source {
+  font-size: 10px;
+  color: var(--border);
+  margin-top: 6px;
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* CHART CONTAINER */
+.chart-wrap {
+  margin: 40px 0;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 28px 24px 20px;
+}
+
+.chart-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.chart-source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--border);
+  margin-top: 12px;
+}
+
+/* BAR CHART */
+.bar-chart { width: 100%; }
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  min-width: 120px;
+  color: var(--ink);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  height: 28px;
+  background: var(--warm);
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  transition: width 1s ease;
+}
+
+/* DONUT CHART */
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.donut-svg { flex-shrink: 0; }
+
+.donut-legend { flex: 1; }
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  margin: 40px 0;
+  padding-left: 32px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.timeline-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* COMPARISON TABLE */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0;
+  font-size: 14px;
+}
+
+.comparison-table th {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 14px;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.comparison-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.comparison-table tr:nth-child(even) td {
+  background: var(--cream);
+}
+
+.check { color: var(--accent2); font-weight: 700; }
+.cross { color: var(--accent); font-weight: 700; }
+.partial { color: var(--chart-4); font-weight: 700; }
+
+/* STARTUP CARDS */
+.startup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.startup-card {
+  border: 1px solid var(--border);
+  padding: 18px;
+  background: var(--paper);
+}
+
+.startup-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.startup-funding {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.startup-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.startup-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* CONVERSION COMPARISON */
+.conversion-bars {
+  margin: 24px 0;
+}
+
+.conv-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.conv-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  min-width: 100px;
+  color: var(--muted);
+}
+
+.conv-track {
+  flex: 1;
+  height: 36px;
+  background: var(--warm);
+  position: relative;
+}
+
+.conv-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+/* FOOTNOTE */
+.footnote {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.7;
+}
+
+/* SECTION RULE */
+.section-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 48px 0;
+}
+
+/* INLINE HIGHLIGHT */
+.highlight-box {
+  background: var(--cream);
+  border-left: 4px solid var(--accent);
+  padding: 16px 20px;
+  margin: 28px 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.highlight-box strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 600px) {
+  body { font-size: 16px; padding: 0 16px 60px; }
+  .stat-row { grid-template-columns: 1fr; }
+  .startup-grid { grid-template-columns: 1fr; }
+  .donut-wrap { flex-direction: column; }
+  .pullquote { margin: 32px -16px; padding: 24px 28px; font-size: 18px; }
+  .bar-label { min-width: 80px; font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="publication-name">Signal &amp; Noise</div>
+  <div class="article-kicker">Search · AI · Commerce · May 2026</div>
+  <h1>The End of<br>Blue Links: How<br>AI Is <em>Rewriting</em><br>the Rules of Search</h1>
+  <p class="deck">For 25 years, SEO meant ranking on Google. Now the game has changed — and most businesses don't realize they're already losing it.</p>
+  <div class="byline">By <span>Vipul Tyagi</span> &nbsp;·&nbsp; May 18, 2026 &nbsp;·&nbsp; 12 min read</div>
+</header>
+
+<p>Something quietly shifted in the last 18 months. Not a disruption — more like a tectonic movement. The kind you don't notice until the building starts to shake.</p>
+
+<p>In June 2025, AI platforms collectively sent 1.13 billion referral visits to websites — a <strong>357% increase</strong> from the same month the year before. ChatGPT is now the fifth most visited website on earth. It processes two billion queries daily. And it got there in roughly two years, a journey that took Google two decades.</p>
+
+<p>The question isn't whether AI is changing search. It already has. The question is: <strong>what do you do about it?</strong></p>
+
+<div class="stat-row">
+  <div class="stat-box">
+    <span class="stat-num">527%</span>
+    <span class="stat-label">Growth in AI-referred sessions in 5 months (Jan–May 2025)</span>
+    <span class="stat-source">Source: Superprompt / Search Engine Land</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num">93%</span>
+    <span class="stat-label">of AI Mode search sessions end without a click to a website</span>
+    <span class="stat-source">Source: Superlines / BrightEdge 2026</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-num">4.4×</span>
+    <span class="stat-label">Higher conversion rate — AI-referred visitors vs organic search</span>
+    <span class="stat-source">Source: Semrush 2025</span>
+  </div>
+</div>
+
+<p>That last number is the one that should make marketers pause. AI-referred visitors convert at <strong>4.4 times the rate</strong> of organic search visitors. They're not browsers — they arrive with intent already formed, a question already answered, a recommendation already made. The AI told them where to go. They went.</p>
+
+<p>This is not the future of search. This is search, right now, in May 2026. And most businesses are optimizing for a version of search that is rapidly becoming less relevant.</p>
+
+<h2>What Happened to SEO?</h2>
+
+<p>Traditional SEO operated on a simple model: write content, build links, earn rankings, capture clicks. The entire discipline was built around the 10 blue links — the ranked list of results Google returned for any query. Your job was to be in that list, preferably near the top.</p>
+
+<p>That model is still valid. <strong>Google still dominates total search volume</strong> by an enormous margin — AI platforms account for roughly 1% of all referral traffic compared to Google's roughly 345 times that volume. Traditional SEO is not dead.</p>
+
+<p>But it is declining. And the new channel is growing at a rate that makes the existing numbers look misleading.</p>
+
+<div class="pullquote">
+  AI traffic is growing 165 times faster than organic search traffic.
+  <span class="attribution">WebFX Research, June 2025</span>
+</div>
+
+<p>The structural change is this: Google's AI Overview — which now reaches 1.5 billion monthly users — answers queries directly. <strong>Zero-click searches have reached 93% in Google's AI Mode</strong>. The click that used to be the prize of SEO never happens. The answer was given. The journey ended inside Google.</p>
+
+<p>Meanwhile, ChatGPT, Perplexity, and Gemini are absorbing a growing share of the queries that used to flow to search engines — particularly the high-intent, research-heavy, and purchase-consideration queries where marketers have historically invested most heavily.</p>
+
+<!-- TRAFFIC GROWTH CHART -->
+<div class="chart-wrap">
+  <div class="chart-title">AI Referral Traffic Growth · Platform Share (April 2026)</div>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">ChatGPT</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:78.16%;background:var(--chart-1)">78.16%</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Gemini</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:8.65%;background:var(--chart-2)">8.65%</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Perplexity</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:7.2%;background:var(--chart-3)">~7%</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Claude</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:2.91%;background:var(--chart-4)">2.91%</div>
+      </div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Copilot + Others</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:3.28%;background:var(--chart-5)">~3%</div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-source">Source: Passionfruit Labs / SE Ranking / Conductor 2026</div>
+</div>
+
+<p>ChatGPT's dominance is striking but deceptive. <strong>Gemini grew 388% in just three months</strong> in late 2025. Claude is growing roughly 10x year-over-year in referral traffic. The platform landscape is consolidating quickly, but the eventual multi-platform equilibrium is going to look different from the winner-take-all SEO world we're used to.</p>
+
+<h2>The New Discipline: GEO, AEO, and ACO</h2>
+
+<p>The marketing industry, never shy about acronyms, has produced three closely related terms for the emerging practice of optimizing for AI platforms:</p>
+
+<p><strong>GEO (Generative Engine Optimization)</strong> — the broad practice of influencing how AI-powered platforms cite, recommend, and mention your brand in generated responses.</p>
+
+<p><strong>AEO (Answer Engine Optimization)</strong> — more specifically, optimizing to win the zero-click answer in Google's AI Overviews and Featured Snippets.</p>
+
+<p><strong>ACO (Agentic Commerce Optimization)</strong> — coined by Scot Wingo, founder of ChannelAdvisor, to describe the emerging practice of preparing product data specifically so AI shopping agents can evaluate, compare, and recommend products to buyers.</p>
+
+<p>These are not the same thing, though the terms are often used interchangeably. The distinction matters: GEO and AEO are primarily about <em>brand and content visibility</em>. ACO is about <em>product commerce</em> — whether your specific products appear in ChatGPT's shopping results with a price, a minimum order quantity, and a buy button.</p>
+
+<!-- THREE CATEGORIES COMPARISON TABLE -->
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Traditional SEO</th>
+      <th>GEO / AEO</th>
+      <th>ACO</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Goal</strong></td>
+      <td>Rank in blue links</td>
+      <td>Get cited in AI answers</td>
+      <td>Get products in AI shopping</td>
+    </tr>
+    <tr>
+      <td><strong>Mechanism</strong></td>
+      <td>Keywords, backlinks, authority</td>
+      <td>Content quality, structured data, citations</td>
+      <td>Merchant feed submission, structured product data</td>
+    </tr>
+    <tr>
+      <td><strong>Output</strong></td>
+      <td>Ranked URL in SERP</td>
+      <td>Brand mention in AI response</td>
+      <td>Product card with price + purchase link</td>
+    </tr>
+    <tr>
+      <td><strong>Measured by</strong></td>
+      <td>Rankings, organic traffic</td>
+      <td>Citation frequency, share of voice</td>
+      <td>Product card appearances, ACP UTM traffic</td>
+    </tr>
+    <tr>
+      <td><strong>Time to result</strong></td>
+      <td>Months to years</td>
+      <td>Weeks to months</td>
+      <td>Days to weeks (after feed approval)</td>
+    </tr>
+    <tr>
+      <td><strong>Primary buyer</strong></td>
+      <td>SEO teams, agencies</td>
+      <td>Brand and content teams</td>
+      <td>Ecommerce and catalog teams</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>How Different Businesses Are Responding</h2>
+
+<p>The response to this shift varies dramatically by company size — not because large companies are smarter, but because the problem they face and the resources they can deploy look completely different.</p>
+
+<h3>Large Enterprises: Moving Fast, Spending Big</h3>
+
+<p>Enterprise brands are treating AI search as a board-level conversation. <strong>38% of business decision-makers have already allocated budget to AI Search Optimisation</strong>. Platforms like Profound — which just raised a $35M Series B from Sequoia Capital — are being deployed by Fortune 500 brands to monitor and optimize their presence across 10+ AI engines simultaneously.</p>
+
+<p>The enterprise approach is sophisticated: track brand mentions across ChatGPT, Gemini, Perplexity, Claude, Copilot, and Grok; analyze citation patterns; identify which content pieces are being referenced; and optimize continuously based on real-time AI behavior data.</p>
+
+<p>Adobe launched an "LLM Optimizer" tool in October 2025 specifically for enterprise clients already on the Adobe Experience Cloud stack. Semrush, the legacy SEO giant, launched its AI Visibility Toolkit as an add-on in September 2025. The incumbent players are scrambling to add AI visibility to their platforms because their enterprise clients are demanding it.</p>
+
+<h3>Mid-Market: Awareness Without Action</h3>
+
+<p>The mid-market picture is more complicated. Awareness is high — most marketing directors at companies doing $10M-$500M in revenue know AI is changing search. But awareness has not translated into action for the majority. <strong>Only 25.7% of marketers have plans to develop content specifically for AI citations.</strong></p>
+
+<p>The gap is partly economic — GEO platforms designed for enterprise buyers start at $499/month and scale into enterprise territory quickly. It's partly organizational — who owns AI visibility? The SEO team? The content team? The ecommerce team? And it's partly epistemic — the playbook is still being written. Best practices are emerging, not established.</p>
+
+<p>The result is a significant opportunity for any mid-market company willing to move early. The companies appearing in AI responses today are not the most authoritative brands in their categories — they're the ones that built AI-ready content and data infrastructure before their competitors noticed the shift was underway.</p>
+
+<h3>Small Businesses: Largely Unaware</h3>
+
+<p>At the small business level — companies under $5M in revenue — AI visibility is almost entirely invisible as a concern. These businesses are still investing in Google Ads and basic SEO. They don't know that AI platforms are actively routing buyers away from them and toward competitors who have structured their data correctly.</p>
+
+<p>This is not a criticism — it is a market reality. The small business layer is where the largest opportunity for AI visibility tools exists, and where the least investment has happened so far.</p>
+
+<!-- CONVERSION RATE COMPARISON CHART -->
+<div class="chart-wrap">
+  <div class="chart-title">Conversion Rates by Traffic Source (2025)</div>
+  <div class="conversion-bars">
+    <div class="conv-item">
+      <div class="conv-label">ChatGPT</div>
+      <div class="conv-track" style="max-width:100%">
+        <div class="conv-fill" style="width:90%;background:var(--chart-1)">15.9%</div>
+      </div>
+    </div>
+    <div class="conv-item">
+      <div class="conv-label">Perplexity</div>
+      <div class="conv-track">
+        <div class="conv-fill" style="width:66%;background:var(--chart-3)">10.5%</div>
+      </div>
+    </div>
+    <div class="conv-item">
+      <div class="conv-label">Claude</div>
+      <div class="conv-track">
+        <div class="conv-fill" style="width:31%;background:var(--chart-4)">5.0%</div>
+      </div>
+    </div>
+    <div class="conv-item">
+      <div class="conv-label">Gemini</div>
+      <div class="conv-track">
+        <div class="conv-fill" style="width:19%;background:var(--chart-5)">3.0%</div>
+      </div>
+    </div>
+    <div class="conv-item">
+      <div class="conv-label">Google Organic</div>
+      <div class="conv-track">
+        <div class="conv-fill" style="width:18%;background:var(--muted)">2.8%</div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-source">Source: Ahrefs / Semrush 2025 — conversion rate to signup/purchase across 1000+ sites</div>
+</div>
+
+<h2>The Startup Landscape: A New Category is Being Built</h2>
+
+<p>Wherever there is a market transition this significant, capital follows. The GEO/AEO/ACO space has attracted substantial venture investment in the past 18 months, and a distinct competitive landscape is emerging.</p>
+
+<p>The category broadly divides into three segments: <strong>monitoring tools</strong> that tell you where you appear in AI responses; <strong>optimization platforms</strong> that help you improve that presence; and <strong>commerce infrastructure</strong> that handles the product data layer specifically.</p>
+
+<!-- STARTUP TIMELINE -->
+<div class="chart-wrap">
+  <div class="chart-title">Notable Funding Events · AI Search Optimization Space</div>
+  <div class="timeline" style="margin:20px 0 8px; padding-left:28px;">
+    <div class="timeline-item">
+      <div class="timeline-date">2024 · Seed</div>
+      <div class="timeline-title">Profound — $3.5M Seed</div>
+      <p class="timeline-desc">Enterprise GEO platform. Monitor + optimize brand visibility across 10+ AI engines. Positioned as "marketing to superintelligence."</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2025 · Series A</div>
+      <div class="timeline-title">Profound — $20M Series A</div>
+      <p class="timeline-desc">Rapid enterprise adoption. Reddit CEO referenced the platform in Q2 2025 earnings call. 700% AI referral increases reported by some clients.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2025 · Platform Launch</div>
+      <div class="timeline-title">Evertune — $19M Raised</div>
+      <p class="timeline-desc">Founded by early Trade Desk team. Tests millions of prompts to identify consistent AI brand recommendation patterns at statistical scale.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2025 · GA</div>
+      <div class="timeline-title">Adobe LLM Optimizer</div>
+      <p class="timeline-desc">Enterprise-only. Part of Adobe Experience Cloud. Aimed at brands already running Adobe Experience Manager with "Optimize at Edge" content delivery.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2026 · Series B</div>
+      <div class="timeline-title">Profound — $35M Series B · Sequoia</div>
+      <p class="timeline-desc">Total funding: $58.5M. G2 Winter 2026 AEO category leader. Expanding into ACO — product-level AI commerce optimization.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2026 · Seed</div>
+      <div class="timeline-title">ReFiBuy — $13.6M Seed</div>
+      <p class="timeline-desc">Founded by Scot Wingo (ChannelAdvisor IPO 2013). Coined "Agentic Commerce Optimization." Targets enterprise brands at $2K+/month. Developer API launching Q3 2026.</p>
+    </div>
+  </div>
+  <div class="chart-source">Sources: Crunchbase, TechCrunch, company announcements</div>
+</div>
+
+<div class="startup-grid">
+  <div class="startup-card">
+    <div class="startup-name">Profound</div>
+    <div class="startup-funding">$58.5M Total · Sequoia Series B</div>
+    <p class="startup-desc">The enterprise market leader. Monitors 10+ AI engines, tracks real user prompts at scale (400M+ conversations), and provides AI crawler analytics. Built for Fortune 500 teams with dedicated AI strategists.</p>
+    <span class="startup-tag">Enterprise GEO</span>
+  </div>
+  <div class="startup-card">
+    <div class="startup-name">ReFiBuy</div>
+    <div class="startup-funding">$13.6M Seed · Oversubscribed 2026</div>
+    <p class="startup-desc">Founder of ChannelAdvisor building ACO for enterprise brands. Coined the ACO category. Targeting Sephora, Gap, Ulta-scale retailers. Developer API launching Q3 2026.</p>
+    <span class="startup-tag">Agentic Commerce</span>
+  </div>
+  <div class="startup-card">
+    <div class="startup-name">Evertune</div>
+    <div class="startup-funding">$19M Raised · Ex-Trade Desk Team</div>
+    <p class="startup-desc">Tests millions of prompts to surface consistent brand recommendation patterns. Coverage includes AI Mode and DeepSeek — broader platform reach than most competitors.</p>
+    <span class="startup-tag">Brand Visibility</span>
+  </div>
+  <div class="startup-card">
+    <div class="startup-name">Paz.ai</div>
+    <div class="startup-funding">Self-Funded · Free Tier Available</div>
+    <p class="startup-desc">4-layer product readiness scoring. Catalog enrichment + feed distribution to ChatGPT and Google AI Mode. Free tier for up to 100 SKUs. Targets DTC and ecommerce brands.</p>
+    <span class="startup-tag">Product Data</span>
+  </div>
+  <div class="startup-card">
+    <div class="startup-name">MentionDesk</div>
+    <div class="startup-funding">Early Stage · Reddit-acquired traction</div>
+    <p class="startup-desc">AI brand mention monitoring across ChatGPT, Claude, Perplexity, and AI Overviews. Self-serve AEO tool targeting B2B SaaS and consumer brands wanting basic visibility tracking.</p>
+    <span class="startup-tag">AEO Monitoring</span>
+  </div>
+  <div class="startup-card">
+    <div class="startup-name">Peec AI</div>
+    <div class="startup-funding">Launched Feb 2025 · Berlin</div>
+    <p class="startup-desc">Fast entry into AI search monitoring with analytics focus. $105–$235/month self-serve plans. Strong for teams wanting monitoring without heavy optimization complexity.</p>
+    <span class="startup-tag">Analytics</span>
+  </div>
+</div>
+
+<h2>What Actually Works: The Evidence So Far</h2>
+
+<p>Beneath the venture capital and category naming, what does the data actually say about what drives AI visibility?</p>
+
+<p>Several patterns have emerged from controlled research and practitioner experience:</p>
+
+<p><strong>Statistics, citations, and data get cited 30-40% more often.</strong> AI platforms prefer content with verifiable, specific claims. Generic marketing copy — "we're the best at what we do" — is essentially invisible to AI. Specific claims with sources are the currency of AI citations.</p>
+
+<p><strong>Recency matters more than expected.</strong> Pages updated within two months earn 28% more AI citations than older content. AI systems appear to weight freshness significantly, particularly for evolving topics.</p>
+
+<p><strong>Structured data unlocks product commerce.</strong> For ecommerce specifically, the gap between companies that have submitted structured product feeds to AI commerce platforms and those that haven't is total. Products not in the feed simply do not appear in AI shopping results — no amount of content quality changes this. The mechanism requires direct merchant feed submission.</p>
+
+<p><strong>Community platforms are being mined by AI.</strong> Reddit, YouTube, and Wikipedia are among the most-referenced domains by major AI models. Brands that have invested in authentic community presence — genuine discussions, user-generated content, peer recommendations — are seeing disproportionate AI visibility as a result.</p>
+
+<div class="highlight-box">
+  <strong>The key insight from our own research</strong>
+  Running 20 buyer-intent queries across ChatGPT, Perplexity, and Google AI Mode revealed a consistent pattern: the companies appearing in AI responses are not the category leaders. They are the companies with structured, machine-readable product data in the right formats. Brand authority — built over years through traditional SEO and marketing — provides almost no advantage in AI commerce search. The advantage goes to whoever submitted their data first.
+</div>
+
+<h2>The Zero-Click Paradox</h2>
+
+<p>Here's the counterintuitive reality at the center of all this: AI is simultaneously making search less valuable as a traffic channel and more valuable as a conversion channel.</p>
+
+<p>When 93% of AI Mode sessions end without a click, the traditional SEO metric — traffic — is the wrong thing to measure. But when the 7% who do click are converting at 4-16 times the rate of organic search visitors, the quality of that traffic is extraordinary.</p>
+
+<p>The implication is that AI visibility operates more like PR than SEO. You're not optimizing for clicks — you're optimizing for <strong>trust and recommendation</strong>. Getting mentioned in an AI response shapes buyer perception even when they don't click. When they eventually do make a purchase decision, the AI-formed impression has already done its work.</p>
+
+<p>McKinsey called AI search "the new front door to the internet." Gartner predicts that traffic to websites from search engines will fall 25% by 2026 — primarily because AI experiences handle queries without sending users anywhere. Both are describing the same shift: <strong>the moment of discovery, evaluation, and often decision is increasingly happening inside AI, not on your website.</strong></p>
+
+<h2>The Honest Assessment: Where Are We, Really?</h2>
+
+<p>It would be easy to write a piece that says AI has completely transformed search and traditional SEO is dead. It would be equally easy to write a piece dismissing AI search as a niche phenomenon not worth strategic attention.</p>
+
+<p>Neither is accurate.</p>
+
+<p>The honest picture is that we are in a transition period. Traditional organic search still drives roughly 345 times more traffic than all AI platforms combined. Gartner's 25% traffic decline prediction has not yet materialized in most verticals. Google is adapting aggressively — AI Overviews are becoming more commercial, more product-oriented, more capable of serving buyer intent.</p>
+
+<p>But the directional signal is unambiguous. AI search is growing at 165 times the rate of organic search. ChatGPT referral traffic grew over 200% year-over-year from Q1 2025 to Q1 2026. The conversion rate advantage of AI-referred visitors is real and substantial.</p>
+
+<p>The strategic question is not whether to invest in AI visibility. It is <em>when</em> and <em>how much</em> — and whether you are early enough to establish a position before your competitors notice what's happening.</p>
+
+<p>The companies that built strong SEO foundations in 2008-2012, before search became a crowded and expensive competition, captured advantages that compounded for a decade. The window for equivalent early-mover advantage in AI visibility is open right now. It will not stay open indefinitely.</p>
+
+<hr class="section-rule">
+
+<div class="footnote">
+  <p><strong>DATA SOURCES</strong></p>
+  <p>
+    Referral traffic statistics: Conductor 2026 Benchmarks, SE Ranking, Semrush, Ahrefs, Superlines, Superprompt.<br>
+    Conversion rate data: Ahrefs June 2025, Semrush 2025 AI Search Study.<br>
+    Market share data: Passionfruit Labs, Emarketer, BrightEdge 2026.<br>
+    Funding data: Crunchbase, company announcements, press releases.<br>
+    Zero-click statistics: BrightEdge, Superlines, Search Engine Land 2026.<br>
+    GEO market projections: Emarketer 2026 forecast, McKinsey 2025.
+  </p>
+  <p style="margin-top:16px">
+    <strong>DISCLOSURE</strong><br>
+    The author works at the intersection of AI commerce and B2B catalog infrastructure. 
+    Some findings referenced are drawn from original research conducted over the past 90 days 
+    on AI visibility patterns in B2B ecommerce. No affiliated companies are named or promoted in this article.
+  </p>
+</div>
+
+</body>
+</html>

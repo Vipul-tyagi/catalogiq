@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://catalogiq-delta.vercel.app/experiment/drinkware/sitemap.xml

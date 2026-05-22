@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CatalogIQ AI Visibility Experiment — Drinkware Category</title>
+  <meta name="description" content="Live experiment measuring whether enriched structured product data drives more AI citations than thin pages. Drinkware category. Day 0 baseline: May 2026.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://catalogiq-delta.vercel.app/experiment/drinkware/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #FAF6F0;
+      --surface: #FFFFFF;
+      --border: #E0D8CC;
+      --accent: #C8420E;
+      --accent-dim: rgba(200,66,14,0.1);
+      --text: #1A1614;
+      --text2: #4A4340;
+      --text3: #7A7068;
+      --green: #1A7A3A;
+      --green-dim: rgba(26,122,58,0.1);
+      --blue: #2A5AB8;
+      --blue-dim: rgba(42,90,184,0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; color: var(--text); background: var(--bg); line-height: 1.6; }
+
+    /* Header */
+    .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 10; }
+    .logo { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .header-tag { font-size: 10px; font-family: 'JetBrains Mono', monospace; background: var(--accent-dim); color: var(--accent); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(200,66,14,0.2); }
+
+    /* Hero */
+    .hero { max-width: 860px; margin: 0 auto; padding: 48px 24px 36px; text-align: center; }
+    .hero-eyebrow { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 14px; }
+    .hero p { font-size: 15px; color: var(--text2); max-width: 620px; margin: 0 auto 20px; }
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green-dim); border: 1px solid rgba(26,122,58,0.25); color: var(--green); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; }
+    .live-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+    /* Main content */
+    .content { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+
+    /* Section */
+    .section { margin-bottom: 40px; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); padding-bottom: 10px; border-bottom: 2px solid var(--accent); margin-bottom: 20px; }
+
+    /* Experiment table */
+    .exp-table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .exp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .exp-table th { background: var(--text); color: #fff; padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+    .exp-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .exp-table tr:last-child td { border-bottom: none; }
+    .exp-table tr:nth-child(even) td { background: #F8F4EE; }
+    .exp-table a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .exp-table a:hover { text-decoration: underline; }
+
+    .version-a { display: inline-block; background: #f0f0f0; color: #555; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; }
+    .version-b { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; }
+
+    .acp-score { display: inline-flex; align-items: center; gap: 6px; }
+    .acp-bar { height: 6px; border-radius: 3px; background: var(--border); width: 60px; overflow: hidden; }
+    .acp-fill { height: 100%; border-radius: 3px; }
+    .acp-fill.low { background: #cc6600; }
+    .acp-fill.high { background: var(--green); }
+    .acp-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+    .acp-num.low { color: #cc6600; }
+    .acp-num.high { color: var(--green); }
+
+    .status-live { display: inline-flex; align-items: center; gap: 5px; background: var(--green-dim); color: var(--green); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px; }
+    .status-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; }
+
+    /* Hypothesis box */
+    .hypothesis-box { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: 6px; padding: 18px 20px; }
+    .hypothesis-box p { font-size: 14px; color: var(--text2); line-height: 1.8; font-style: italic; }
+
+    /* Comparison grid */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+    .compare-card h4 { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .compare-card.thin h4 { color: #888; }
+    .compare-card.thin h4::before { content: "✗"; color: #cc6600; font-size: 15px; }
+    .compare-card.enriched h4 { color: var(--green); }
+    .compare-card.enriched h4::before { content: "✓"; color: var(--green); font-size: 15px; }
+    .compare-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .compare-list li { font-size: 12px; color: var(--text2); padding: 5px 8px; border-radius: 3px; }
+    .compare-card.thin .compare-list li { background: #fff8f5; }
+    .compare-card.enriched .compare-list li { background: var(--green-dim); }
+
+    /* Measurement schedule */
+    .schedule-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .schedule-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; text-align: center; }
+    .schedule-item .day { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .schedule-item .date { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text3); margin-bottom: 6px; }
+    .schedule-item .note { font-size: 12px; color: var(--text2); }
+    .schedule-item.current { border-color: var(--accent); background: var(--accent-dim); }
+    .schedule-item.current .day { color: var(--accent); }
+
+    /* Query section */
+    .query-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 22px; }
+    .query-box p { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.7; }
+    .query-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .query-item { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); display: flex; align-items: flex-start; gap: 8px; }
+    .query-item::before { content: "›"; color: var(--accent); font-size: 16px; line-height: 1.2; flex-shrink: 0; }
+    .query-cta { font-size: 12px; color: var(--text3); line-height: 1.7; }
+    .query-cta strong { color: var(--text2); }
+
+    /* Page links */
+    .page-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .page-link { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; text-decoration: none; color: var(--text); display: flex; flex-direction: column; gap: 4px; transition: border-color 0.15s; }
+    .page-link:hover { border-color: var(--accent); }
+    .page-link .pl-version { font-size: 10px; font-family: 'JetBrains Mono', monospace; margin-bottom: 2px; }
+    .page-link .pl-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); }
+    .page-link .pl-desc { font-size: 12px; color: var(--text3); }
+    .page-link .pl-score { font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-top: 4px; }
+    .pl-a .pl-version { color: #888; } .pl-a .pl-score { color: #cc6600; }
+    .pl-b .pl-version { color: var(--accent); } .pl-b .pl-score { color: var(--green); }
+
+    @media (max-width: 768px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .schedule-grid { grid-template-columns: 1fr 1fr; }
+      .page-links { grid-template-columns: 1fr; }
+      .site-header .header-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="#">CatalogIQ<span>.</span></a>
+  <span class="header-tag">AI Visibility Experiment</span>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Experiment Hub · Drinkware Category</div>
+  <h1>CatalogIQ AI Visibility Experiment</h1>
+  <p>Measuring whether enriched structured product data drives more AI citations than thin pages. Four pages live. Day 0 baseline: May 2026.</p>
+  <div class="live-badge"><span class="live-dot"></span> 4 pages live</div>
+</div>
+
+<div class="content">
+
+  <!-- Experiment status table -->
+  <div class="section">
+    <div class="section-title">Experiment Status</div>
+    <div class="exp-table-wrap">
+      <table class="exp-table">
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Version</th>
+            <th>ACP Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="myron-thin/">Myron 30oz Tumbler</a></td>
+            <td><span class="version-a">A — Thin</span></td>
+            <td>
+              <div class="acp-score">
+                <div class="acp-bar"><div class="acp-fill low" style="width:41%"></div></div>
+                <span class="acp-num low">41/100</span>
+              </div>
+            </td>
+            <td><span class="status-live"><span class="status-dot"></span>Live</span></td>
+          </tr>
+          <tr>
+            <td><a href="myron-enriched/">Myron 30oz Tumbler</a></td>
+            <td><span class="version-b">B — Enriched</span></td>
+            <td>
+              <div class="acp-score">
+                <div class="acp-bar"><div class="acp-fill high" style="width:89%"></div></div>
+                <span class="acp-num high">89/100</span>
+              </div>
+            </td>
+            <td><span class="status-live"><span class="status-dot"></span>Live</span></td>
+          </tr>
+          <tr>
+            <td><a href="imperial-thin/">Imperial Oreno 30oz</a></td>
+            <td><span class="version-a">A — Thin</span></td>
+            <td>
+              <div class="acp-score">
+                <div class="acp-bar"><div class="acp-fill low" style="width:36%"></div></div>
+                <span class="acp-num low">36/100</span>
+              </div>
+            </td>
+            <td><span class="status-live"><span class="status-dot"></span>Live</span></td>
+          </tr>
+          <tr>
+            <td><a href="imperial-enriched/">Imperial Oreno 30oz</a></td>
+            <td><span class="version-b">B — Enriched</span></td>
+            <td>
+              <div class="acp-score">
+                <div class="acp-bar"><div class="acp-fill high" style="width:91%"></div></div>
+                <span class="acp-num high">91/100</span>
+              </div>
+            </td>
+            <td><span class="status-live"><span class="status-dot"></span>Live</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Page links -->
+  <div class="section">
+    <div class="section-title">Live Pages</div>
+    <div class="page-links">
+      <a class="page-link pl-a" href="myron-thin/">
+        <span class="pl-version">Version A — Thin baseline</span>
+        <span class="pl-name">Myron 30oz Stainless Tumbler</span>
+        <span class="pl-desc">Replicates Myron Promos product page — minimal structured data</span>
+        <span class="pl-score">ACP: 41/100 · NC0238</span>
+      </a>
+      <a class="page-link pl-b" href="myron-enriched/">
+        <span class="pl-version">Version B — Enriched</span>
+        <span class="pl-name">Myron 30oz Stainless Tumbler</span>
+        <span class="pl-desc">Same product with full Schema.org, FAQPage, OG price tags, B2B specs</span>
+        <span class="pl-score">ACP: 89/100 · NC0238</span>
+      </a>
+      <a class="page-link pl-a" href="imperial-thin/">
+        <span class="pl-version">Version A — Thin baseline</span>
+        <span class="pl-name">Imperial Oreno 30oz Tumbler</span>
+        <span class="pl-desc">Replicates Imperial Promotions page — no production time, no schema</span>
+        <span class="pl-score">ACP: 36/100 · IMP-286-DWA-OR25</span>
+      </a>
+      <a class="page-link pl-b" href="imperial-enriched/">
+        <span class="pl-version">Version B — Enriched</span>
+        <span class="pl-name">Imperial Oreno 30oz Tumbler</span>
+        <span class="pl-desc">Production timeline added, full Schema.org, FAQPage, AggregateOffer</span>
+        <span class="pl-score">ACP: 91/100 · IMP-286-DWA-OR25</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hypothesis -->
+  <div class="section">
+    <div class="section-title">What We're Testing</div>
+    <div class="hypothesis-box">
+      <p>"Hypothesis: Fully enriched product pages with structured B2B data (price, MOQ, decoration methods, production time, Schema.org markup, FAQ pairs) will appear more frequently in Perplexity and Google AI Mode responses to buyer-intent queries than thin pages containing the same product with minimal structured data."</p>
+    </div>
+  </div>
+
+  <!-- Key differences -->
+  <div class="section">
+    <div class="section-title">Key Differences Between Versions</div>
+    <div class="compare-grid">
+      <div class="compare-card thin">
+        <h4>Thin pages are missing</h4>
+        <ul class="compare-list">
+          <li>Schema.org Product JSON-LD</li>
+          <li>Open Graph price tags (og:price:amount)</li>
+          <li>Production time — Imperial (key gap)</li>
+          <li>Decoration method detail — Myron</li>
+          <li>FAQPage schema with answered pairs</li>
+          <li>B2B procurement language</li>
+          <li>Use-case context (events, onboarding)</li>
+          <li>MOQ stated explicitly in title/meta</li>
+        </ul>
+      </div>
+      <div class="compare-card enriched">
+        <h4>Enriched pages added</h4>
+        <ul class="compare-list">
+          <li>Schema.org Product + FAQPage JSON-LD</li>
+          <li>og:price:amount, product:availability</li>
+          <li>Production timeline box (7-day standard)</li>
+          <li>Laser / full color / screen print detail</li>
+          <li>5 answered FAQ pairs visible on page</li>
+          <li>B2B Procurement Specs panel</li>
+          <li>6 use-case pill tags per page</li>
+          <li>MOQ, SKU, and specs in og:title</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Measurement schedule -->
+  <div class="section">
+    <div class="section-title">Measurement Schedule</div>
+    <div class="schedule-grid">
+      <div class="schedule-item current">
+        <div class="day">Day 0</div>
+        <div class="date">May 2026</div>
+        <div class="note">Baseline recorded — 0 citations expected. Pages indexed.</div>
+      </div>
+      <div class="schedule-item">
+        <div class="day">Day 7</div>
+        <div class="date">~May 24, 2026</div>
+        <div class="note">First measurement. Check Perplexity + Google AI Mode.</div>
+      </div>
+      <div class="schedule-item">
+        <div class="day">Day 14</div>
+        <div class="date">~May 31, 2026</div>
+        <div class="note">Primary measurement. Compare A vs B citation rates.</div>
+      </div>
+      <div class="schedule-item">
+        <div class="day">Day 28</div>
+        <div class="date">~Jun 14, 2026</div>
+        <div class="note">Secondary measurement. Confirm or update findings.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Run queries yourself -->
+  <div class="section">
+    <div class="section-title">Run These Queries Yourself</div>
+    <div class="query-box">
+      <p>Want to see the experiment live? Run these exact buyer-intent queries in <strong>ChatGPT</strong> and <strong>Perplexity</strong>, then note which pages appear in the cited sources. If enriched pages appear and thin pages don't, the hypothesis holds.</p>
+      <div class="query-list">
+        <div class="query-item">30oz stainless tumbler corporate event minimum 24 units</div>
+        <div class="query-item">custom branded tumblers employee onboarding kits</div>
+        <div class="query-item">laser engraved tumbler bulk order 50 units</div>
+      </div>
+      <p class="query-cta"><strong>What to look for:</strong> Check the cited sources / references in each AI response. If a Version B (enriched) page appears and the corresponding Version A (thin) does not, that's a confirmed signal. If both appear, compare position. Screenshot and record results on Day 7, 14, and 28.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CatalogIQ Experiment | Version: hub | Product: drinkware-experiment | Deployed: May 2026 -->
+</body>
+</html>

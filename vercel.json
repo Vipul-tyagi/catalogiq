@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/audit.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/audit", "destination": "/api/audit.js" }
+  ]
+}

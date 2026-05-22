@@ -1,0 +1,16 @@
+{
+  "name": "catalogiq",
+  "version": "1.0.0",
+  "description": "AI visibility audit tool for promotional products distributors. Enter a company name, select a category — the app runs a real GPT-4o query simulating a corporate buyer and uses Claude to diagnose exactly why the company didn't appear.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.2",
+    "openai": "^6.37.0"
+  }
+}

@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CatalogIQ — Are Your Products Invisible to ChatGPT?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: #0a0a0b;
+  color: #f0ede8;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── SUBTLE GRID BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 54px;
+  border-bottom: 1px solid #1e1e22;
+  background: rgba(10,10,11,0.95);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+.logo .dot { color: #e8541a; }
+
+.header-right {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 120px 48px 64px;
+  max-width: 660px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(232,84,26,0.1);
+  border: 1px solid rgba(232,84,26,0.2);
+  border-radius: 20px;
+  padding: 5px 14px 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #e8541a;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #e8541a;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 18px;
+}
+
+.accent { color: #e8541a; }
+
+.hero-sub {
+  font-size: 16px;
+  color: #6b6866;
+  line-height: 1.7;
+  margin: 0 auto 48px;
+  max-width: 480px;
+}
+
+.hero-sub strong { color: #9b9890; }
+
+/* ── INPUT CARD ── */
+.input-card {
+  background: #111113;
+  border: 1px solid #222226;
+  border-radius: 14px;
+  padding: 32px;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.step-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.company-input {
+  width: 100%;
+  background: #0a0a0b;
+  border: 1.5px solid #222226;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #f0ede8;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.company-input:focus { border-color: #e8541a; }
+.company-input::placeholder { color: #2e2e32; }
+
+.cat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.cats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.cat {
+  background: #0a0a0b;
+  border: 1.5px solid #222226;
+  border-radius: 8px;
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.cat:hover { border-color: #333337; }
+
+.cat.active {
+  border-color: #e8541a;
+  background: rgba(232,84,26,0.06);
+}
+
+.cat-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
+.cat-name { font-size: 12px; font-weight: 600; color: #9b9890; display: block; }
+.cat-sub { font-size: 10px; color: #3a3a3e; display: block; margin-top: 2px; }
+.cat.active .cat-name { color: #e8541a; }
+
+.run-btn {
+  width: 100%;
+  background: #e8541a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.run-btn:hover:not(:disabled) { background: #d04a14; transform: translateY(-1px); }
+.run-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.disclaimer {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #2e2e32;
+  letter-spacing: 1px;
+  margin-top: 12px;
+}
+
+/* ── LOADING ── */
+#loading {
+  display: none;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 48px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.spinner-wrap { padding: 48px 0 28px; }
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 2px solid #1e1e22;
+  border-top-color: #e8541a;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-company {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.loading-detail {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #3a3a3e;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.loading-steps {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  background: #111113;
+  border: 1px solid #1e1e22;
+  border-radius: 10px;
+  padding: 20px 24px;
+}
+
+.lstep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #2e2e32;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+.lstep.active { color: #e8541a; }
+.lstep.done { color: #22c55e; }
+
+.lstep-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── RESULTS ── */
+#results {
+  display: none;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── VERDICT BANNER ── */
+.verdict-banner {
+  border-radius: 10px;
+  padding: 20px 28px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid;
+}
+
+.verdict-absent {
+  background: rgba(239,68,68,0.06);
+  border-color: rgba(239,68,68,0.2);
+}
+
+.verdict-weak {
+  background: rgba(234,179,8,0.06);
+  border-color: rgba(234,179,8,0.2);
+}
+
+.verdict-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+
+.verdict-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.verdict-absent .verdict-title { color: #ef4444; }
+.verdict-weak .verdict-title { color: #eab308; }
+
+.verdict-sub { font-size: 13px; color: #6b6866; line-height: 1.6; }
+
+/* ── RESULTS GRID ── */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ── CHATGPT PANEL ── */
+.chatgpt-panel {
+  background: #111113;
+  border: 1px solid #222226;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid #1e1e22;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #3a3a3e;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.chatgpt-logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: #3a3a3e;
+  font-weight: 500;
+}
+
+.chatgpt-circle {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #3a3a3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #0a0a0b;
+  font-weight: 700;
+}
+
+.panel-body { padding: 18px; }
+
+.chatgpt-query-bubble {
+  background: rgba(232,84,26,0.08);
+  border: 1px solid rgba(232,84,26,0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #9b9890;
+  font-style: italic;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.chatgpt-response-text {
+  font-size: 12px;
+  color: #6b6866;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Highlight competitor names that appeared */
+.chatgpt-response-text .competitor-name {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+/* Highlight company name if found */
+.chatgpt-response-text .your-name {
+  background: rgba(234,179,8,0.15);
+  color: #eab308;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.not-found-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #ef4444;
+  letter-spacing: 1px;
+  margin-top: 14px;
+}
+
+/* ── PAIN PANEL ── */
+.pain-panel {
+  background: #111113;
+  border: 1px solid #222226;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pain-panel-body {
+  padding: 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pain-section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ── COMPETITOR CARDS ── */
+.competitor-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.comp-card {
+  background: rgba(34,197,94,0.05);
+  border: 1px solid rgba(34,197,94,0.15);
+  border-radius: 7px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.comp-appeared-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.comp-card-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f0ede8;
+  margin-bottom: 2px;
+}
+
+.comp-card-detail {
+  font-size: 11px;
+  color: #6b6866;
+  line-height: 1.5;
+}
+
+.comp-card-price {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #22c55e;
+  flex-shrink: 0;
+  padding-left: 8px;
+}
+
+/* ── GAP REASON ── */
+.gap-reason-box {
+  background: rgba(239,68,68,0.05);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: auto;
+}
+
+.gap-reason-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #ef4444;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.gap-reason-text {
+  font-size: 13px;
+  color: #c8c5c0;
+  line-height: 1.7;
+}
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: linear-gradient(135deg, #111113 0%, rgba(232,84,26,0.05) 100%);
+  border: 1px solid #222226;
+  border-radius: 12px;
+  padding: 36px;
+  text-align: center;
+}
+
+.cta-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.cta-section h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.cta-section p {
+  font-size: 14px;
+  color: #6b6866;
+  max-width: 420px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+.cta-what-you-get {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  max-width: 500px;
+  margin: 0 auto 28px;
+  text-align: left;
+}
+
+.wyg-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b6866;
+}
+
+.wyg-check {
+  color: #e8541a;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cta-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: #e8541a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover { background: #d04a14; transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent;
+  color: #6b6866;
+  border: 1.5px solid #222226;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover { border-color: #3a3a3e; color: #9b9890; }
+
+.cta-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #2e2e32;
+  letter-spacing: 1px;
+  margin-top: 14px;
+}
+
+/* ── MODAL ── */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-bg.open { display: flex; }
+
+.modal {
+  background: #111113;
+  border: 1px solid #2a2a2e;
+  border-radius: 14px;
+  padding: 40px;
+  max-width: 460px;
+  width: 100%;
+  position: relative;
+}
+
+.modal-x {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: #1a1a1e;
+  border: 1px solid #2a2a2e;
+  color: #6b6866;
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.modal-x:hover { color: #e8541a; border-color: #e8541a; }
+
+.modal h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+
+.modal-sub { font-size: 13px; color: #6b6866; margin-bottom: 24px; line-height: 1.6; }
+
+.modal-field { margin-bottom: 14px; }
+
+.modal-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #3a3a3e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.modal-input {
+  width: 100%;
+  background: #0a0a0b;
+  border: 1.5px solid #222226;
+  border-radius: 7px;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #f0ede8;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus { border-color: #e8541a; }
+.modal-input::placeholder { color: #2e2e32; }
+
+.modal-submit {
+  width: 100%;
+  background: #e8541a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.modal-submit:hover { background: #d04a14; }
+
+.modal-fine {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #2e2e32;
+  letter-spacing: 0.5px;
+  margin-top: 12px;
+}
+
+/* ── CONFIRMATION ── */
+.confirmation {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.confirmation h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.confirmation p { font-size: 13px; color: #6b6866; line-height: 1.7; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #1a1a1e;
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #2e2e32;
+}
+.footer-logo .dot { color: #e8541a; }
+
+.footer-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #2e2e32;
+  letter-spacing: 1px;
+}
+
+/* ── ERROR STATE ── */
+.error-box {
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 13px;
+  color: #ef4444;
+  text-align: center;
+  margin-top: 16px;
+  display: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  header { padding: 0 20px; }
+  .hero { padding: 100px 20px 48px; }
+  .input-card { padding: 24px 20px; margin: 0 20px; }
+  #loading { padding: 0 20px; }
+  #results { padding: 32px 20px 64px; }
+  .results-grid { grid-template-columns: 1fr; }
+  .cta-what-you-get { grid-template-columns: 1fr; }
+  .cta-btns { flex-direction: column; }
+  footer { flex-direction: column; gap: 8px; padding: 20px; text-align: center; }
+  .modal { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">catalog<span class="dot">.</span>iq</div>
+  <div class="header-right">Live AI Audit · Promotional Products</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    Live ChatGPT Query
+  </div>
+  <h1>Your competitors are<br>visible. <span class="accent">Are you?</span></h1>
+  <p class="hero-sub">
+    Enter your company name. We run a <strong>real ChatGPT query</strong>
+    right now and show you exactly who appeared — and why you didn't.
+  </p>
+</div>
+
+<!-- INPUT CARD -->
+<div class="input-card" id="input-card">
+  <div class="step-label">Step 1 — Your company</div>
+  <input
+    type="text"
+    class="company-input"
+    id="company-input"
+    placeholder="e.g. Mercury Promotions"
+    autocomplete="off"
+    onkeydown="if(event.key==='Enter') runAudit()"
+  >
+
+  <span class="cat-label">Step 2 — Your best-selling category</span>
+  <div class="cats">
+    <button class="cat active" data-cat="drinkware" onclick="selectCat(this)">
+      <span class="cat-emoji">🥤</span>
+      <span class="cat-name">Drinkware</span>
+      <span class="cat-sub">Tumblers · Bottles</span>
+    </button>
+    <button class="cat" data-cat="totes" onclick="selectCat(this)">
+      <span class="cat-emoji">👜</span>
+      <span class="cat-name">Totes & Bags</span>
+      <span class="cat-sub">Totes · Backpacks</span>
+    </button>
+    <button class="cat" data-cat="apparel" onclick="selectCat(this)">
+      <span class="cat-emoji">👕</span>
+      <span class="cat-name">Apparel</span>
+      <span class="cat-sub">Polos · Hoodies</span>
+    </button>
+  </div>
+
+  <button class="run-btn" id="run-btn" onclick="runAudit()">
+    <span id="run-btn-text">Check My AI Visibility Now</span>
+    <span>→</span>
+  </button>
+
+  <div class="error-box" id="error-box">
+    Something went wrong running the audit. Please try again in a moment.
+  </div>
+
+  <div class="disclaimer">Free · Live query · No signup required</div>
+</div>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="spinner-wrap">
+    <div class="spinner"></div>
+    <div class="loading-company" id="loading-company">Running audit...</div>
+    <div class="loading-detail" id="loading-detail">Querying ChatGPT live</div>
+  </div>
+  <div class="loading-steps">
+    <div class="lstep active" id="ls0"><div class="lstep-dot"></div>Sending live query to ChatGPT...</div>
+    <div class="lstep" id="ls1"><div class="lstep-dot"></div>Reading ChatGPT's actual response...</div>
+    <div class="lstep" id="ls2"><div class="lstep-dot"></div>Checking if your company appeared...</div>
+    <div class="lstep" id="ls3"><div class="lstep-dot"></div>Identifying competitors that showed up...</div>
+    <div class="lstep" id="ls4"><div class="lstep-dot"></div>Diagnosing the specific gap...</div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<section id="results">
+
+  <!-- VERDICT -->
+  <div id="verdict-banner" class="verdict-banner verdict-absent">
+    <div class="verdict-icon" id="verdict-icon">✗</div>
+    <div>
+      <div class="verdict-title" id="verdict-title">Not found</div>
+      <div class="verdict-sub" id="verdict-sub"></div>
+    </div>
+  </div>
+
+  <!-- TWO PANEL GRID -->
+  <div class="results-grid">
+
+    <!-- LEFT: ChatGPT response -->
+    <div class="chatgpt-panel">
+      <div class="panel-header">
+        <div class="panel-title">What ChatGPT Returned</div>
+        <div class="chatgpt-logo">
+          <div class="chatgpt-circle">G</div>
+          ChatGPT
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="chatgpt-query-bubble" id="query-bubble"></div>
+        <div class="chatgpt-response-text" id="response-text"></div>
+        <div class="not-found-chip" id="not-found-chip">
+          <span>✗</span>
+          <span id="not-found-label">Your company was not mentioned</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Pain analysis -->
+    <div class="pain-panel">
+      <div class="panel-header">
+        <div class="panel-title">Who Appeared Instead</div>
+      </div>
+      <div class="pain-panel-body">
+
+        <div class="pain-section-label">Companies ChatGPT recommended</div>
+        <div class="competitor-cards" id="competitor-cards"></div>
+
+        <div class="gap-reason-box">
+          <div class="gap-reason-label">Why you didn't appear</div>
+          <div class="gap-reason-text" id="gap-reason-text"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-eyebrow">Detailed Audit · $97 · 48-Hour Delivery</div>
+    <h2>See every invisible SKU.<br>Get a step-by-step fix plan.</h2>
+    <p>
+      This preliminary audit shows the pattern. The detailed audit shows every
+      product affected, the revenue at risk, and exactly how to fix it for your catalog.
+    </p>
+    <div class="cta-what-you-get">
+      <div class="wyg-item"><span class="wyg-check">→</span>Every SKU scored individually</div>
+      <div class="wyg-item"><span class="wyg-check">→</span>Revenue at risk by product</div>
+      <div class="wyg-item"><span class="wyg-check">→</span>Before/after for top 10 SKUs</div>
+      <div class="wyg-item"><span class="wyg-check">→</span>Priority fix list, ranked</div>
+      <div class="wyg-item"><span class="wyg-check">→</span>ACP + GMC field gap report</div>
+      <div class="wyg-item"><span class="wyg-check">→</span>Competitor comparison</div>
+    </div>
+    <div class="cta-btns">
+      <button class="btn-primary" onclick="openModal('paid')">Get My Detailed Audit — $97 →</button>
+      <button class="btn-secondary" onclick="openModal('free')">Book a Free 15-Min Call</button>
+    </div>
+    <div class="cta-note">48-hour delivery · No subscription · One-time report</div>
+  </div>
+
+</section>
+
+<footer>
+  <div class="footer-logo">catalog<span class="dot">.</span>iq</div>
+  <div class="footer-note">Built by the PM who led Quill's OpenAI / ACP Integration</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+
+    <div id="modal-form-view">
+      <h3 id="modal-title">Get Your Detailed Audit</h3>
+      <p class="modal-sub" id="modal-sub">
+        We'll analyze your full catalog and send you a detailed report within 48 hours.
+      </p>
+      <div class="modal-field">
+        <label class="modal-label">Your Name</label>
+        <input type="text" class="modal-input" id="m-name" placeholder="First and last name">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Work Email</label>
+        <input type="email" class="modal-input" id="m-email" placeholder="you@company.com">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Company Website</label>
+        <input type="text" class="modal-input" id="m-site" placeholder="yourcompany.com">
+      </div>
+      <button class="modal-submit" id="modal-submit-btn" onclick="submitModal()">
+        <span id="modal-btn-label">Confirm — Get My Audit ($97) →</span>
+      </button>
+      <p class="modal-fine" id="modal-fine-text">48-hour delivery · $97 one-time · No subscription</p>
+    </div>
+
+    <div class="confirmation" id="modal-confirmation">
+      <div style="font-size:32px;margin-bottom:12px">✓</div>
+      <h3 id="confirm-title">You're in.</h3>
+      <p id="confirm-msg"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedCat = 'drinkware';
+let isPaid = true;
+
+const CATEGORY_QUERIES = {
+  drinkware: 'We need custom branded tumblers and water bottles for a corporate event — 200 employees. Looking for bulk pricing, minimum order quantities, and fast production.',
+  totes: 'We need custom branded tote bags for a 300-person corporate conference — full color logo, eco-friendly options, price per unit at that quantity.',
+  apparel: 'Looking to order branded polo shirts and hoodies for a 40-person sales team — sizes XS through 3XL, embroidered logo, moisture-wicking fabric.'
+};
+
+function selectCat(btn) {
+  document.querySelectorAll('.cat').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedCat = btn.dataset.cat;
+}
+
+async function runAudit() {
+  const company = document.getElementById('company-input').value.trim();
+  if (!company) {
+    const inp = document.getElementById('company-input');
+    inp.style.borderColor = '#e8541a';
+    inp.placeholder = 'Please enter your company name';
+    inp.focus();
+    setTimeout(() => {
+      inp.style.borderColor = '';
+      inp.placeholder = 'e.g. Mercury Promotions';
+    }, 2000);
+    return;
+  }
+
+  // Hide form, show loading
+  document.getElementById('input-card').style.display = 'none';
+  document.getElementById('error-box').style.display = 'none';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+
+  document.getElementById('loading-company').textContent = company;
+  document.getElementById('loading-detail').textContent =
+    `Querying ChatGPT for ${selectedCat} distributors...`;
+
+  // Animate loading steps
+  const steps = ['ls0','ls1','ls2','ls3','ls4'];
+  const delays = [0, 1200, 2400, 3600, 4800];
+
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      if (i > 0) {
+        document.getElementById(steps[i-1]).classList.remove('active');
+        document.getElementById(steps[i-1]).classList.add('done');
+      }
+      document.getElementById(id).classList.add('active');
+    }, delays[i]);
+  });
+
+  try {
+    const response = await fetch('/api/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company, category: selectedCat })
+    });
+
+    if (!response.ok) throw new Error('API error');
+
+    const data = await response.json();
+
+    // Wait for last animation step
+    await new Promise(r => setTimeout(r, 5800));
+
+    document.getElementById('loading').style.display = 'none';
+    renderResults(company, data);
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('input-card').style.display = 'block';
+    document.getElementById('error-box').style.display = 'block';
+    console.error(err);
+  }
+}
+
+function renderResults(company, data) {
+  // ── VERDICT BANNER ──
+  const banner = document.getElementById('verdict-banner');
+  const icon = document.getElementById('verdict-icon');
+  const title = document.getElementById('verdict-title');
+  const sub = document.getElementById('verdict-sub');
+
+  if (data.found && data.found_but_weak) {
+    banner.className = 'verdict-banner verdict-weak';
+    icon.textContent = '⚠';
+    title.textContent = `${company} appeared — but without product listings`;
+    sub.textContent = data.found_but_weak;
+    document.getElementById('not-found-chip').style.background = 'rgba(234,179,8,0.1)';
+    document.getElementById('not-found-chip').style.borderColor = 'rgba(234,179,8,0.2)';
+    document.getElementById('not-found-chip').style.color = '#eab308';
+    document.getElementById('not-found-label').textContent = `${company} appeared without product data`;
+  } else {
+    banner.className = 'verdict-banner verdict-absent';
+    icon.textContent = '✗';
+    title.textContent = `${company} was not mentioned`;
+    sub.textContent = `ChatGPT responded to a live buyer query for ${data.category_label} and did not include ${company}. Here is exactly what it returned.`;
+    document.getElementById('not-found-label').textContent = `${company} was not mentioned`;
+  }
+
+  // ── CHATGPT QUERY BUBBLE ──
+  document.getElementById('query-bubble').textContent =
+    `"${CATEGORY_QUERIES[selectedCat]}"`;
+
+  // ── CHATGPT RESPONSE — highlight competitors and company name ──
+  let responseHtml = escapeHtml(data.chatgpt_response || '');
+
+  // Highlight competitors that appeared
+  if (data.competitors && data.competitors.length > 0) {
+    data.competitors.forEach(comp => {
+      if (comp.name) {
+        const escaped = escapeHtml(comp.name);
+        responseHtml = responseHtml.replace(
+          new RegExp(escaped, 'gi'),
+          `<span class="competitor-name">${escaped}</span>`
+        );
+      }
+    });
+  }
+
+  // Highlight company name if found
+  if (data.found) {
+    const escapedCompany = escapeHtml(company);
+    responseHtml = responseHtml.replace(
+      new RegExp(escapedCompany, 'gi'),
+      `<span class="your-name">${escapedCompany}</span>`
+    );
+  }
+
+  // Truncate to ~600 chars for readability
+  const plain = data.chatgpt_response || '';
+  const truncated = plain.length > 650
+    ? plain.substring(0, 650) + '...'
+    : plain;
+  let truncHtml = escapeHtml(truncated);
+  if (data.competitors) {
+    data.competitors.forEach(comp => {
+      if (comp.name) {
+        const e = escapeHtml(comp.name);
+        truncHtml = truncHtml.replace(new RegExp(e, 'gi'), `<span class="competitor-name">${e}</span>`);
+      }
+    });
+  }
+
+  const responseEl = document.getElementById('response-text');
+  responseEl.innerHTML = truncHtml;
+
+  // ── COMPETITOR CARDS ──
+  const cardsEl = document.getElementById('competitor-cards');
+  cardsEl.innerHTML = '';
+
+  const competitors = data.competitors || [];
+  const displayComps = competitors.slice(0, 3);
+
+  if (displayComps.length === 0) {
+    cardsEl.innerHTML = '<div style="font-size:12px;color:#3a3a3e;padding:8px 0">Analyzing competitors from response...</div>';
+  } else {
+    displayComps.forEach(comp => {
+      const card = document.createElement('div');
+      card.className = 'comp-card';
+      card.innerHTML = `
+        <div class="comp-appeared-dot"></div>
+        <div style="flex:1">
+          <div class="comp-card-name">${escapeHtml(comp.name)}</div>
+          <div class="comp-card-detail">${escapeHtml(comp.detail || 'Appeared in ChatGPT results')}</div>
+        </div>
+        ${comp.price ? `<div class="comp-card-price">${escapeHtml(comp.price)}</div>` : ''}
+      `;
+      cardsEl.appendChild(card);
+    });
+  }
+
+  // ── GAP REASON ──
+  document.getElementById('gap-reason-text').textContent =
+    data.gap_reason || `${company}'s product listings are missing the structured data ChatGPT needs to match buyer queries.`;
+
+  // Show results
+  document.getElementById('results').style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function openModal(type) {
+  isPaid = type === 'paid';
+  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('modal-confirmation').style.display = 'none';
+
+  if (isPaid) {
+    document.getElementById('modal-title').textContent = 'Get Your Detailed Audit';
+    document.getElementById('modal-sub').textContent =
+      "We'll analyze your full catalog and deliver a detailed gap report within 48 hours. You'll receive a payment link by email.";
+    document.getElementById('modal-btn-label').textContent = 'Confirm — Get My Audit ($97) →';
+    document.getElementById('modal-fine-text').textContent = '48-hour delivery · $97 one-time · No subscription';
+  } else {
+    document.getElementById('modal-title').textContent = 'Book a Free 15-Min Call';
+    document.getElementById('modal-sub').textContent =
+      "We'll walk through your preliminary results and show you exactly what fixing this looks like for your catalog.";
+    document.getElementById('modal-btn-label').textContent = 'Book My Free Call →';
+    document.getElementById('modal-fine-text').textContent = 'No commitment · 15 minutes · We come prepared';
+  }
+
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+function submitModal() {
+  const name = document.getElementById('m-name').value.trim();
+  const email = document.getElementById('m-email').value.trim();
+  if (!name || !email) {
+    if (!name) document.getElementById('m-name').style.borderColor = '#e8541a';
+    if (!email) document.getElementById('m-email').style.borderColor = '#e8541a';
+    setTimeout(() => {
+      document.getElementById('m-name').style.borderColor = '';
+      document.getElementById('m-email').style.borderColor = '';
+    }, 2000);
+    return;
+  }
+
+  // Here: POST to your Formspree or Tally endpoint
+  // fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: JSON.stringify({name,email,...}) })
+
+  document.getElementById('modal-form-view').style.display = 'none';
+  document.getElementById('modal-confirmation').style.display = 'block';
+
+  if (isPaid) {
+    document.getElementById('confirm-title').textContent = "You're confirmed.";
+    document.getElementById('confirm-msg').innerHTML =
+      `We'll send a payment link to <strong>${email}</strong> within the hour. Once confirmed, your detailed audit will be delivered within 48 hours.`;
+  } else {
+    document.getElementById('confirm-title').textContent = "Call booked.";
+    document.getElementById('confirm-msg').innerHTML =
+      `We'll send a calendar link to <strong>${email}</strong> within a few hours. We'll come prepared with your specific results.`;
+  }
+}
+</script>
+</body>
+</html>
