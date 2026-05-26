@@ -5,6 +5,16 @@
     }
   },
   "rewrites": [
-    { "source": "/api/audit", "destination": "/api/audit.js" }
+    { "source": "/api/audit", "destination": "/api/audit.js" },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "drinkware.picolotales.com" }],
+      "destination": "/experiment/drinkware/index.html"
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "drinkware.picolotales.com" }],
+      "destination": "/experiment/drinkware/:path*"
+    }
   ]
 }
