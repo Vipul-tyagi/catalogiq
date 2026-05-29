@@ -11,13 +11,13 @@
     {
       "source": "/",
       "has": [{ "type": "host", "value": "drinkware.picolotales.com" }],
-      "destination": "/experiment/drinkware/index.html"
+      "destination": "/experiment/drinkware"
     },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "drinkware.picolotales.com" }],
       "destination": "/experiment/drinkware/:path*"
     },
-    { "source": "/", "destination": "/main.html" }
+    { "source": "/", "destination": "/main" }
   ]
 }
