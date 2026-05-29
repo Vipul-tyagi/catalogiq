@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "functions": {
     "api/audit.js": {
       "maxDuration": 30
