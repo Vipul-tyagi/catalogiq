@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://catalogiq-delta.vercel.app/experiment/drinkware/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://drinkware.picolotales.com/</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://catalogiq-delta.vercel.app/experiment/drinkware/myron-thin/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://drinkware.picolotales.com/myron-thin/</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://catalogiq-delta.vercel.app/experiment/drinkware/myron-enriched/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://drinkware.picolotales.com/myron-enriched/</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://catalogiq-delta.vercel.app/experiment/drinkware/imperial-thin/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://drinkware.picolotales.com/imperial-thin/</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://catalogiq-delta.vercel.app/experiment/drinkware/imperial-enriched/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <loc>https://drinkware.picolotales.com/imperial-enriched/</loc>
+    <lastmod>2026-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

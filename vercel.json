@@ -15,6 +15,7 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "drinkware.picolotales.com" }],
       "destination": "/experiment/drinkware/:path*"
-    }
+    },
+    { "source": "/", "destination": "/main.html" }
   ]
 }
